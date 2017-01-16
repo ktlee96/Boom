@@ -12,7 +12,8 @@ Game.Map = function (mapTileSetName) {
     _width: this._tiles.length,
     _height: this._tiles[0].length,
     _entitiesByLocation: {},
-    _locationsByEntity: {}
+    _locationsByEntity: {},
+    _itemsByLocation: {},
   };
 
   Game.DATASTORE.MAP[this.attr._id] = this;
@@ -49,6 +50,14 @@ Game.Map.prototype.addEntity = function (ent,pos) {
   ent.setPos(pos);
 };
 
+Game.Map.prototype.addItem = function (itm,pos) {
+    var loc = pos.x+","+pos.y;
+    if (! this.attr._itemsByLocation[loc]) {
+      this.attr._itemsByLocation[loc] = [];
+    }
+    this.attr._itemsByLocation[loc].push(itm.getId());
+};
+
 Game.Map.prototype.updateEntityLocation = function (ent) {
   //console.log('updating position of '+ent.getName()+' ('+ent.getId()+')');
   var origLoc = this.attr._locationsByEntity[ent.getId()];
@@ -68,6 +77,17 @@ Game.Map.prototype.getEntity = function (x_or_pos,y) {
   var entId = this.attr._entitiesByLocation[useX+','+useY];
   if (entId) { return Game.DATASTORE.ENTITY[entId]; }
   return  false;
+};
+
+Game.Map.prototype.getItems = function (x_or_pos,y) {
+  var useX = x_or_pos,useY=y;
+  if (typeof x_or_pos == 'object') {
+    useX = x_or_pos.x;
+    useY = x_or_pos.y;
+  }
+  var itemIds = this.attr._itemsByLocation[useX+','+useY];
+  if (itemIds) { return itemIds.map(function(iid) { return Game.DATASTORE.ITEM[iid]; }); }
+  return  [];
 };
 
 Game.Map.prototype.getRandomLocation = function(filter_func) {
