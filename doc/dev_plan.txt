@@ -1,0 +1,45 @@
+All projects, coding and otherwise, boil down to two fundamental questions- what should we do, and how should we do it? Learning computer programming is largely about the latter. Implementing a large project is as much or more about the former.
+
+------------
+
+Q: How do you eat an elephant?
+A: One bite at a time.
+Addendum: Which bites are taken when is key to success.
+
+------------
+
+Some of the tasks that would need to be done for a full game aren't really necessary for a base game, so I'm (at least for now) setting them aside. I'm also far enough along that I'm going to put a bit of thought into ordering the milestone list at this point.
+Base game:
+- looking at things (targeting)
+- equipment
+- improved map generation - random seeds for maps? seeding items? connected maps?
+- improved map persistence - saving the RNG state
+Later:
+- random tables (ways of selecting at random from a weighted and possibly dynamic set)
+- treasure drops
+- throwing things & ranged combat
+- map modification - digging
+- ongoing actions
+- avatar advancement - experience and improvement
+- game scoring
+- multiple maps and moving between them
+- improved map tiles and generation - more tile types, variable digging
+- improved combat mechanics
+- ipad compatibility (capturing input, figuring out key bindings)
+
+Looking at things is a fun step for game play because it really brings the world to life. On the code side we add a new ui mode that will support moving a cursor around and giving the player info about whatever the cursor is over/on. This will make more use of Sight mixin - the may expose some parts that need to be tweaked, or we may find it sufficient to our needs.
+
+The plan is:
+- ui mode layer for targeting
+- use one of the movement key bindings (numpad or waxd - which ever gamePlay is using) to move the cursor around, limited to avatar FoV
+- two rendering passes - first is delegated to gamePlay, second positions the targeting cursor
+- send message to player about whatever is under the cursor (entity, item pile, item, tile)
+
+Maybe approach targeting similar to itemListing - it's general functionality that comes up for a lot of game mechanics, so consider a base ui mode which is customized via template for particular uses.
+
+1. key binding for action
+2. handleInput for action
+3. new UIMode base
+4. mode details
+5. user experience tweaking
+6. persistence (not really needed for this, since can't access the persistence mode from targeting mode to do a save)
