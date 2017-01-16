@@ -16,13 +16,8 @@ Game.Generator.prototype.learn = function (template,createKeyName) {
   this._templates[createKeyName] = template;
 };
 
-Game.Generator.prototype.create = function (createKeyName,presetId) {
-  var templateToUse = JSON.parse(JSON.stringify(this._templates[createKeyName]));
-  // console.log("Generator.create using ");
-  // console.dir(templateToUse);
-  if (presetId) {
-      templateToUse.presetId = presetId;
-  }
+Game.Generator.prototype.create = function (createKeyName) {
+  var templateToUse = this._templates[createKeyName];
   if (!templateToUse) { templateToUse = '_DEFAULT';  }
   templateToUse.generator_template_key = createKeyName;
   return new this._constructorToUse(templateToUse);
