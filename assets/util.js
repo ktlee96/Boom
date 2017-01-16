@@ -20,6 +20,11 @@ Game.util = {
     return a;
   },
 
+  uniqueId: function() {
+     Game.util.ID_SEQUENCE++;
+     return Date.now()+'-'+Game.util.ID_SEQUENCE+'-'+Game.util.randomString(24);
+  },
+
   randomInt: function (min,max) {
     var range = max - min;
     var offset = Math.floor(ROT.RNG.getUniform()*(range+1));

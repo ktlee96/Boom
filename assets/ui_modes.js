@@ -234,7 +234,7 @@ Game.UIMode.gamePlay = {
       // console.dir(inputType);
       // console.log('gameStart inputData:');
       // console.dir(inputData);
-      if (inputData.keyIdentifier == 'Enter') {
+      if (inputData.key == 'Enter') {
         Game.switchUiMode(Game.UIMode.gameWin);
         return;
       } else if (pressedKey == '1') {

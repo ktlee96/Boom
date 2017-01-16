@@ -5,7 +5,7 @@ Game.EntityGenerator.learn({
   chr:'@',
   fg:'#dda',
   maxHp: 10,
-  mixins: [Game.EntityMixin.WalkerCorporeal,Game.EntityMixin.HitPoints,Game.EntityMixin.Chronicle]
+  mixins: ["WalkerCorporeal","HitPoints","Chronicle"]
 });
 
 Game.EntityGenerator.learn({
@@ -13,5 +13,13 @@ Game.EntityGenerator.learn({
   chr:'%',
   fg:'#6b6',
   maxHp: 1,
-  mixins: [Game.EntityMixin.HitPoints]
+  mixins: ["HitPoints"]
+});
+
+Game.EntityGenerator.learn({
+  name: 'bomb',
+  chr:'o',
+  fg:'#b66',
+  maxHp: 1,
+  mixins: ["HitPoints"]
 });

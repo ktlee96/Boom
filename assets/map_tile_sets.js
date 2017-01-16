@@ -1,7 +1,7 @@
 Game.MapTileSets = {
   caves1: {
-    _width: 300,
-    _height: 200,
+    _width: 50,
+    _height: 50,
     getMapTiles: function () {
       var mapTiles = Game.util.init2DArray(this._width,this._height,Game.Tile.nullTile);
       var generator = new ROT.Map.Cellular(this._width,this._height);
