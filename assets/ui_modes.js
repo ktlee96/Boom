@@ -95,6 +95,14 @@ Game.UIMode.gamePersistence = {
            Game.DATASTORE.ITEM[itemId].fromJSON(state_data.ITEM[itemId]);
          }
        }
+       for (var bombId in state_data.BOMB) {
+          if (state_data.BOMB.hasOwnProperty(bombId)) {
+            var bombAttr = JSON.parse(state_data.BOMB[bombId]);
+            var newI = Game.BombGenerator.create(bombAttr._generator_template_key,bombAttr._id);
+            Game.DATASTORE.BOMB[bombId] = newI;
+            Game.DATASTORE.BOMB[bombId].fromJSON(state_data.BOMB[bombId]);
+          }
+        }
 
       // game play
       Game.UIMode.gamePlay.attr = state_data.GAME_PLAY;
@@ -113,6 +121,7 @@ Game.UIMode.gamePersistence = {
     Game.DATASTORE.MAP = {};
     Game.DATASTORE.ENTITY = {};
     Game.DATASTORE.ITEM = {};
+    Game.DATASTORE.BOMB= {};
   },
   localStorageAvailable: function () { // NOTE: see https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
   	try {
@@ -228,6 +237,9 @@ Game.UIMode.gamePlay = {
         this.moveAvatar(0,-1);
       } else if (pressedKey == '9') {
         this.moveAvatar(1,-1);
+      } else if (pressedKey == ' ') {
+    
+        this.getMap().addBomb(Game.BombGenerator.create('bomb'),this.getAvatar().getPos());
       }
     }
     else if (inputType == 'keydown') {
