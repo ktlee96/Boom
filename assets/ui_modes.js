@@ -238,8 +238,17 @@ Game.UIMode.gamePlay = {
       } else if (pressedKey == '9') {
         this.moveAvatar(1,-1);
       } else if (pressedKey == ' ') {
-
-        this.getMap().addBomb(Game.BombGenerator.create('bomb'),this.getAvatar().getPos());
+        var b = Game.BombGenerator.create('bomb');
+        b.setMap(this.getMap());
+        this.getMap().addBomb(b,this.getAvatar().getPos());
+      }else if (pressedKey == 'p') {
+        console.dir (this.getMap().attr._bombsByLocation);
+        for (var a in this.getMap().attr._bombsByLocation) {
+          console.dir(a);
+          var b = this.getMap().attr._bombsByLocation[a];
+          console.dir (b);
+          b[0].explode();
+        }
       }
     }
     else if (inputType == 'keydown') {

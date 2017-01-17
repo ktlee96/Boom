@@ -65,10 +65,10 @@ Game.Map.prototype.addBomb = function (bomb,pos) {
     var loc = pos.x+","+pos.y;
     if (! this.attr._bombsByLocation[loc]) {
       this.attr._bombsByLocation[loc] = [];
-      this.attr._locationsByBomb[bomb.getId()] = pos.x + "," + pos.y;
+      this.attr._locationsByBomb[bomb] = loc;
     }
-    this.attr._bombsByLocation[loc].push(bomb.getId());
-    this.attr._locationsByBomb[bomb.getId()].push(loc);
+    this.attr._bombsByLocation[loc].push(bomb);
+  //  this.attr._locationsByBomb[bomb.getId()].push(loc);
 };
 
 
@@ -129,6 +129,14 @@ Game.Map.prototype.getRandomLocation = function(filter_func) {
 Game.Map.prototype.extractEntity = function (ent) {
   this.attr._entitiesByLocation[ent.getX()+","+ent.getY()] = undefined;
   this.attr._locationsByEntity[ent.getId()] = undefined;
+  return ent;
+};
+Game.Map.prototype.extractEntityAt = function (x_or_pos,y) {
+  var ent = this.getEntity(x_or_pos,y);
+  if (ent) {
+    this.attr._entitiesByLocation[ent.getX()+","+ent.getY()] = undefined;
+    this.attr._locationsByEntity[ent.getId()] = undefined;
+  }
   return ent;
 };
 Game.Map.prototype.getRandomWalkableLocation = function() {

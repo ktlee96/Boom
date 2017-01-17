@@ -15,6 +15,13 @@ Game.Entity = function(template) {
 
 Game.Entity.extend(Game.SymbolActive);
 
+Game.Entity.prototype.destroy = function() {
+    //remove from map
+    this.getMap().extractEntity(this);
+    //remove from datastore
+    Game.DATASTORE.ENTITY[this.getId()] = undefined;
+};
+
 Game.Entity.prototype.getId = function() {
     return this.attr._id;
 };
