@@ -32,7 +32,7 @@ var Game = {
   _DISPLAY_SPACING: 1.1,
   _display: {
     main: {
-      w: 80,
+      w: 64,
       h: 24,
       o: null
     },
@@ -63,7 +63,7 @@ var Game = {
 
     for (var display_key in this._display) {
       if (this._display.hasOwnProperty(display_key)) {
-        this._display[display_key].o = new ROT.Display({width: this._display[display_key].w, height: this._display[display_key].h, spacing: Game._DISPLAY_SPACING});
+        this._display[display_key].o = new ROT.Display({width: this._display[display_key].w, height: this._display[display_key].h, spacing: Game._DISPLAY_SPACING, fontSize:24 });
       }
     }
     this.renderDisplayAll();

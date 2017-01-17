@@ -14,6 +14,11 @@ Game.EntityMixin.WalkerCorporeal = {
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
     }
+    console.log(targetX + ", " + targetY);
+    if (map.getBombs(targetX,targetY)&&map.getBombs(targetX, targetY).length>0) { // can't walk into spaces occupied by other entities
+      // NOTE: attack / interact handling (or event raising) would go here
+      return false;
+    }
     if (map.getTile(targetX,targetY).isWalkable()) {
       this.setPos(targetX,targetY);
       var myMap = this.getMap();

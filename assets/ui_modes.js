@@ -165,7 +165,7 @@ Game.UIMode.gamePlay = {
     //console.log('game playing');
     Game.Message.clear();
     if (this.attr._avatarId) {
-      this.setCameraToAvatar();
+    //  this.setCameraToAvatar();
     }
     Game.refresh();
   },
@@ -187,7 +187,7 @@ Game.UIMode.gamePlay = {
   render: function (display) {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
     var bg = Game.UIMode.DEFAULT_COLOR_BG;
-    this.getMap().renderOn(display,this.attr._cameraX,this.attr._cameraY);
+    this.getMap().renderOn(display,38,10);
   },
   renderAvatarInfo: function (display) {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
@@ -238,7 +238,7 @@ Game.UIMode.gamePlay = {
       } else if (pressedKey == '9') {
         this.moveAvatar(1,-1);
       } else if (pressedKey == ' ') {
-    
+
         this.getMap().addBomb(Game.BombGenerator.create('bomb'),this.getAvatar().getPos());
       }
     }

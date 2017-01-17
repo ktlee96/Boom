@@ -1,10 +1,12 @@
 Game.MapTileSets = {
   caves1: {
-    _width: 50,
-    _height: 50,
+    _width: 60,
+    _height: 20,
     getMapTiles: function () {
       var mapTiles = Game.util.init2DArray(this._width,this._height,Game.Tile.nullTile);
       var generator = new ROT.Map.Cellular(this._width,this._height);
+      // var map = new ROT.Map.Arena(80,24);
+      // var display1 = new ROT.Display({width:80, height:24, fontSize:})
       generator.randomize(0.5);
 
       // repeated cellular automata process

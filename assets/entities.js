@@ -2,7 +2,7 @@ Game.EntityGenerator = new Game.Generator('entities',Game.Entity);
 
 Game.EntityGenerator.learn({
   name: 'avatar',
-  chr:'@',
+  chr:'👺',
   fg:'#dda',
   maxHp: 10,
   mixins: ["WalkerCorporeal","HitPoints","Chronicle"]
@@ -10,16 +10,8 @@ Game.EntityGenerator.learn({
 
 Game.EntityGenerator.learn({
   name: 'moss',
-  chr:'%',
+  chr:'📦',
   fg:'#6b6',
-  maxHp: 1,
-  mixins: ["HitPoints"]
-});
-
-Game.EntityGenerator.learn({
-  name: 'bomb',
-  chr:'o',
-  fg:'#b66',
   maxHp: 1,
   mixins: ["HitPoints"]
 });
