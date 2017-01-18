@@ -64,11 +64,11 @@ Game.Map.prototype.addBomb = function (bomb,pos) {
 
     var loc = pos.x+","+pos.y;
     if (! this.attr._bombsByLocation[loc]) {
-      this.attr._bombsByLocation[loc] = [];
-      this.attr._locationsByBomb[bomb] = loc;
+      this.attr._bombsByLocation[loc] = bomb;
+      this.attr._locationsByBomb[bomb.getId()] = loc;
     }
-    this.attr._bombsByLocation[loc].push(bomb);
-  //  this.attr._locationsByBomb[bomb.getId()].push(loc);
+    // this.attr._bombsByLocation[loc].push(bomb);
+    // this.attr._locationsByBomb[bomb]=loc;
 };
 
 
@@ -93,6 +93,17 @@ Game.Map.prototype.getEntity = function (x_or_pos,y) {
   return  false;
 };
 
+Game.Map.prototype.getBombs = function (x_or_pos,y) {
+  var useX = x_or_pos,useY=y;
+  if (typeof x_or_pos == 'object') {
+    useX = x_or_pos.x;
+    useY = x_or_pos.y;
+  }
+  var bombIds = this.attr._bombsByLocation[useX+','+useY];
+  if (bombIds) { return bombIds; }
+  return  false;
+};
+
 Game.Map.prototype.getItems = function (x_or_pos,y) {
   var useX = x_or_pos,useY=y;
   if (typeof x_or_pos == 'object') {
@@ -101,16 +112,6 @@ Game.Map.prototype.getItems = function (x_or_pos,y) {
   }
   var itemIds = this.attr._itemsByLocation[useX+','+useY];
   if (itemIds) { return itemIds.map(function(iid) { return Game.DATASTORE.ITEM[iid]; }); }
-  return  [];
-};
-Game.Map.prototype.getBombs = function (x_or_pos,y) {
-  var useX = x_or_pos,useY=y;
-  if (typeof x_or_pos == 'object') {
-    useX = x_or_pos.x;
-    useY = x_or_pos.y;
-  }
-  var bombIds = this.attr._bombsByLocation[useX+','+useY];
-  if (bombIds) { return bombIds.map(function(iid) { return Game.DATASTORE.BOMB[iid]; }); }
   return  [];
 };
 
@@ -164,7 +165,7 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
         ent.draw(display,x,y);
       }
       var bomb = this.getBombs(mapPos);
-      if (bomb.length>=1) {
+      if (bomb) {
         Game.Symbol.BOMB_PILE.draw(display,x,y);
       }
     }

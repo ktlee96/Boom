@@ -26,17 +26,28 @@ Game.Bomb.prototype.setMap = function(map) {
 };
 
 Game.Bomb.prototype.explode = function () {
-  console.log("explode");
-  console.dir(this.getMap().attr._locationsByBomb);
- var pos = this.getMap().attr._locationsByBomb[this];
- console.dir(pos);
- var posX = parseInt(pos);
- var posY = pos.substring(3,5);
- console.log(posX + 1);
- console.dir(this.getMap().getEntity(posX+1 + ","+ posY));
- this.getMap().extractEntityAt(posX+1 + ","+ posY);
- this.getMap().extractEntityAt(posX + ","+ posY+1);
- this.getMap().extractEntityAt(posX-1 + ","+ posY);
- this.getMap().extractEntityAt(posX + ","+ posY-1);
 
+this.destroy(1,0);
+this.destroy(0,1);
+this.destroy(-1,0);
+this.destroy(0,-1);
+
+ delete Game.DATASTORE.BOMB[this.getId()];
+ delete this.getMap().attr._bombsByLocation[this.getMap().attr._locationsByBomb[this.getId()]];
+ delete this.getMap().attr._locationsByBomb[this.getId()];
+ Game.renderDisplayAll();
+};
+
+Game.Bomb.prototype.destroy = function (dx, dy) {
+  var pos = this.getMap().attr._locationsByBomb[this.getId()];
+  console.log(pos);
+  var posArr = pos.split(',');
+  var posX = posArr[0];
+  var posY = posArr[1];
+  var useX = (posX*1) + dx;
+  var useY = (posY*1) + dy;
+  delete Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
+  delete this.getMap().attr._entitiesByLocation[useX+","+useY];
+  delete this.getMap().attr._locationsByEntity[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
+  //Game.Tile.fireTile.draw();
 };

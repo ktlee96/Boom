@@ -221,19 +221,19 @@ Game.UIMode.gamePlay = {
         return;
       } else if (pressedKey == '1') {
         this.moveAvatar(-1,1);
-      } else if (pressedKey == '2') {
+      } else if (pressedKey == 's') {
         this.moveAvatar(0,1);
       } else if (pressedKey == '3') {
         this.moveAvatar(1,1);
-      } else if (pressedKey == '4') {
+      } else if (pressedKey == 'a') {
         this.moveAvatar(-1,0);
       } else if (pressedKey == '5') {
         // do nothing / stay still
-      } else if (pressedKey == '6') {
+      } else if (pressedKey == 'd') {
         this.moveAvatar(1,0);
       } else if (pressedKey == '7') {
         this.moveAvatar(-1,-1);
-      } else if (pressedKey == '8') {
+      } else if (pressedKey == 'w') {
         this.moveAvatar(0,-1);
       } else if (pressedKey == '9') {
         this.moveAvatar(1,-1);
@@ -247,7 +247,7 @@ Game.UIMode.gamePlay = {
           console.dir(a);
           var b = this.getMap().attr._bombsByLocation[a];
           console.dir (b);
-          b[0].explode();
+          b.explode();
         }
       }
     }
