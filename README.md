@@ -14,3 +14,11 @@ Also, this adds a framework for more flexible map generation. In this particular
 --------------------
 
 Deciding what to do when is a major challenge for larger projects. Refactoring a bunch of stuff to switch to using datastore and object id's was on the complicated side, but I think that this is pretty much the earliest / simplest stage of the project where switching to that approach makes sense and can be reasonably tested. So, despite the all the re-working involved I'm pretty happy with the timing of this chunk of work.
+
+
+
+Timeline: 
+
+Items, Avatar 
+
+
