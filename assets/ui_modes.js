@@ -240,8 +240,15 @@ Game.UIMode.gamePlay = {
       } else if (pressedKey == ' ') {
         var b = Game.BombGenerator.create('bomb');
         b.setMap(this.getMap());
+
+
+
         this.getMap().addBomb(b,this.getAvatar().getPos());
+
+
+
       }else if (pressedKey == 'p') {
+        this.getMap().clearFire();
         console.dir (this.getMap().attr._bombsByLocation);
         for (var a in this.getMap().attr._bombsByLocation) {
           console.dir(a);
@@ -268,7 +275,7 @@ Game.UIMode.gamePlay = {
     this.setCameraToAvatar();
 
     // dev code - just add some entities to the map
-    for (var ecount = 0; ecount < 80; ecount++) {
+    for (var ecount = 0; ecount < 40; ecount++) {
       this.getMap().addEntity(Game.EntityGenerator.create('moss'),this.getMap().getRandomWalkableLocation());
     }
 

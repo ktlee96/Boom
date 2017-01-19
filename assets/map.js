@@ -44,6 +44,15 @@ Game.Map.prototype.getTile = function (x_or_pos,y) {
   }
   return this._tiles[useX][useY] || Game.Tile.nullTile;
 };
+Game.Map.prototype.clearFire = function (){
+  for (var a = 0; a < this.attr._width; a ++) {
+    for (var b =0 ;  b< this.attr._height; b++) {
+      if (this.getTile(a,b)  == Game.Tile.fireTile) {
+        this._tiles[a][b] = Game.Tile.floorTile;
+      }
+    }
+  }
+}
 
 Game.Map.prototype.addEntity = function (ent,pos) {
   this.attr._entitiesByLocation[pos.x+","+pos.y] = ent.getId();
@@ -143,6 +152,7 @@ Game.Map.prototype.extractEntityAt = function (x_or_pos,y) {
 Game.Map.prototype.getRandomWalkableLocation = function() {
   return this.getRandomLocation(function(t){ return t.isWalkable(); });
 };
+
 
 Game.Map.prototype.renderOn = function (display,camX,camY) {
   // console.log("display is ");

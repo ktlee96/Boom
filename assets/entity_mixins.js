@@ -15,7 +15,7 @@ Game.EntityMixin.WalkerCorporeal = {
       return false;
     }
     console.log(targetX + ", " + targetY);
-    if (map.getBombs(targetX,targetY)&&map.getBombs(targetX, targetY).length>0) { // can't walk into spaces occupied by other entities
+    if (map.getBombs(targetX,targetY)) { // can't walk into spaces occupied by other entities
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
     }
@@ -58,7 +58,7 @@ Game.EntityMixin.Detonation = {
     mixinName: 'Detonation',
     mixinGroup:'Detonation',
 
-    
+
   }
 }
 Game.EntityMixin.HitPoints = {

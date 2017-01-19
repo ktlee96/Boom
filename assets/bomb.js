@@ -31,11 +31,13 @@ this.destroy(1,0);
 this.destroy(0,1);
 this.destroy(-1,0);
 this.destroy(0,-1);
+this.destroy(0,0);
 
  delete Game.DATASTORE.BOMB[this.getId()];
  delete this.getMap().attr._bombsByLocation[this.getMap().attr._locationsByBomb[this.getId()]];
  delete this.getMap().attr._locationsByBomb[this.getId()];
  Game.renderDisplayAll();
+ 
 };
 
 Game.Bomb.prototype.destroy = function (dx, dy) {
@@ -49,5 +51,6 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
   delete Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
   delete this.getMap().attr._entitiesByLocation[useX+","+useY];
   delete this.getMap().attr._locationsByEntity[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
-  //Game.Tile.fireTile.draw();
+  if (this.getMap().getTile(useX , useY) != Game.Tile.decTile&&this.getMap().getTile(useX , useY) != Game.Tile.wallTile&&this.getMap().getTile(useX , useY) != Game.Tile.everTile){
+  this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}
 };

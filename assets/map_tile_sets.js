@@ -16,7 +16,15 @@ Game.MapTileSets = {
       // run again then update map
       generator.create(function(x,y,v) {
         if (v === 1) {
-          mapTiles[x][y] = Game.Tile.wallTile;
+          var a = ROT.RNG.getUniform();
+          if (a < 0.2 ){
+            mapTiles[x][y]= Game.Tile.decTile;
+          }
+          else if (a <0.3){
+            mapTiles[x][y] = Game.Tile.everTile;
+          }
+          else {
+          mapTiles[x][y] = Game.Tile.wallTile;}
         } else {
           mapTiles[x][y] = Game.Tile.floorTile;
         }
