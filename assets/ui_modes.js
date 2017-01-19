@@ -194,6 +194,7 @@ Game.UIMode.gamePlay = {
     var bg = Game.UIMode.DEFAULT_COLOR_BG;
     display.drawText(1,2,"avatar x: "+this.getAvatar().getX(),fg,bg); // DEV
     display.drawText(1,3,"avatar y: "+this.getAvatar().getY(),fg,bg); // DEV
+    display.drawText(1,4,"cur HP: "+this.getAvatar().getCurHp(),fg,bg);
   },
   moveAvatar: function (dx,dy) {
     if (this.getAvatar().tryWalk(this.getMap(),dx,dy)) {

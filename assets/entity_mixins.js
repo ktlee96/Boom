@@ -19,6 +19,11 @@ Game.EntityMixin.WalkerCorporeal = {
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
     }
+    if (map.getTile(targetX,targetY)==Game.Tile.fireTile) {
+      if (this.hasMixin('HitPoints')) {
+        this.takeHits(2);
+      }
+    }
     if (map.getTile(targetX,targetY).isWalkable()) {
       this.setPos(targetX,targetY);
       var myMap = this.getMap();
@@ -67,8 +72,8 @@ Game.EntityMixin.HitPoints = {
     mixinGroup: 'HitPoints',
     stateNamespace: '_HitPoints_attr',
     stateModel:  {
-      maxHp: 1,
-      curHp: 1
+      maxHp: 10,
+      curHp: 10
     },
     init: function (template) {
       this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
