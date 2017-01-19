@@ -5,7 +5,7 @@ Game.Map = function (mapTileSetName) {
   //console.log("setting up new map using "+mapTileSetName+" tile set");
 
   this._tiles = Game.MapTileSets[mapTileSetName].getMapTiles();
-
+  console.dir(this._tiles);
   this.attr = {
     _id: Game.util.randomString(32),
     _mapTileSetName: mapTileSetName,
