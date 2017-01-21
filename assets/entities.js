@@ -1,8 +1,16 @@
 Game.EntityGenerator = new Game.Generator('entities',Game.Entity);
 
 Game.EntityGenerator.learn({
-  name: 'avatar',
+  name: 'avatar2',
   chr:'👺',
+  fg:'#dda',
+  maxHp: 10,
+  mixins: ["WalkerCorporeal","HitPoints","Chronicle"]
+});
+
+Game.EntityGenerator.learn({
+  name: 'avatar1',
+  chr:'👹',
   fg:'#dda',
   maxHp: 10,
   mixins: ["WalkerCorporeal","HitPoints","Chronicle"]

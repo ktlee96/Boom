@@ -53,6 +53,15 @@ Game.Map.prototype.clearFire = function (){
     }
   }
 }
+Game.Map.prototype.clearWater = function (){
+  for (var a = 0; a < this.attr._width; a ++) {
+    for (var b =0 ;  b< this.attr._height; b++) {
+      if (this.getTile(a,b)  == Game.Tile.waterTile) {
+        this._tiles[a][b] = Game.Tile.floorTile;
+      }
+    }
+  }
+}
 
 Game.Map.prototype.addEntity = function (ent,pos) {
   this.attr._entitiesByLocation[pos.x+","+pos.y] = ent.getId();
@@ -176,7 +185,7 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
       }
       var bomb = this.getBombs(mapPos);
       if (bomb) {
-        Game.Symbol.BOMB_PILE.draw(display,x,y);
+        bomb.draw(display,x,y);
       }
     }
   }

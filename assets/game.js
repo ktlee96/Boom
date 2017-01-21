@@ -82,8 +82,8 @@ var Game = {
   getDisplay: function (displayId) {
     if (this._display.hasOwnProperty(displayId)) {
       return this._display[displayId].o;
-    }
-    return null;
+     }
+     return null;
   },
 
   refresh: function () {

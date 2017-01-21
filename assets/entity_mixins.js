@@ -58,14 +58,7 @@ Game.EntityMixin.Chronicle = {
     this.attr._Chronicle_attr.turnCounter = n;
   }
 };
-Game.EntityMixin.Detonation = {
-  META: {
-    mixinName: 'Detonation',
-    mixinGroup:'Detonation',
 
-
-  }
-}
 Game.EntityMixin.HitPoints = {
   META: {
     mixinName: 'HitPoints',

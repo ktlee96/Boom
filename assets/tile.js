@@ -24,5 +24,6 @@ Game.Tile.nullTile = new Game.Tile({name:'nullTile'});
 Game.Tile.floorTile = new Game.Tile({name:'floor',chr:' ',walkable:true});
 Game.Tile.wallTile = new Game.Tile({name:'wall',chr:'🌴'});
 Game.Tile.fireTile = new Game.Tile({name:'fire',chr:'🔥',walkable:true});
+Game.Tile.waterTile = new Game.Tile({name:'water',chr:'💧',walkable:true});
 Game.Tile.decTile = new Game.Tile({name:'dec',chr:'🌳'});
 Game.Tile.everTile = new Game.Tile({name:'ever',chr:'🌲'});

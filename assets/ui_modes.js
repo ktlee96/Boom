@@ -158,15 +158,13 @@ Game.UIMode.gamePlay = {
     _mapId: '',
     _cameraX: 100,
     _cameraY: 100,
-    _avatarId: ''
+    _avatarId: '',
+    _avatar2Id: ''
   },
   JSON_KEY: 'uiMode_gamePlay',
   enter: function () {
     //console.log('game playing');
     Game.Message.clear();
-    if (this.attr._avatarId) {
-    //  this.setCameraToAvatar();
-    }
     Game.refresh();
   },
   exit: function () {
@@ -181,8 +179,14 @@ Game.UIMode.gamePlay = {
   getAvatar: function () {
     return Game.DATASTORE.ENTITY[this.attr._avatarId];
   },
+  getAvatar2: function () {
+    return Game.DATASTORE.ENTITY[this.attr._avatar2Id];
+  },
   setAvatar: function (a) {
     this.attr._avatarId = a.getId();
+  },
+  setAvatar2: function (a) {
+    this.attr._avatar2Id = a.getId();
   },
   render: function (display) {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
@@ -198,6 +202,11 @@ Game.UIMode.gamePlay = {
   },
   moveAvatar: function (dx,dy) {
     if (this.getAvatar().tryWalk(this.getMap(),dx,dy)) {
+      this.setCameraToAvatar();
+    }
+  },
+  moveAvatar2: function (dx,dy) {
+    if (this.getAvatar2().tryWalk(this.getMap(),dx,dy)) {
       this.setCameraToAvatar();
     }
   },
@@ -220,42 +229,51 @@ Game.UIMode.gamePlay = {
       if (inputData.key == 'Enter') {
         Game.switchUiMode(Game.UIMode.gameWin);
         return;
-      } else if (pressedKey == '1') {
-        this.moveAvatar(-1,1);
       } else if (pressedKey == 's') {
         this.moveAvatar(0,1);
-      } else if (pressedKey == '3') {
-        this.moveAvatar(1,1);
       } else if (pressedKey == 'a') {
         this.moveAvatar(-1,0);
-      } else if (pressedKey == '5') {
-        // do nothing / stay still
       } else if (pressedKey == 'd') {
         this.moveAvatar(1,0);
-      } else if (pressedKey == '7') {
-        this.moveAvatar(-1,-1);
       } else if (pressedKey == 'w') {
         this.moveAvatar(0,-1);
-      } else if (pressedKey == '9') {
-        this.moveAvatar(1,-1);
-      } else if (pressedKey == ' ') {
+      } else if (pressedKey == '5') {
+        this.moveAvatar2(0,1);
+      } else if (pressedKey == '4') {
+        this.moveAvatar2(-1,0);
+      } else if (pressedKey == '6') {
+        this.moveAvatar2(1,0);
+      } else if (pressedKey == '8') {
+        this.moveAvatar2(0,-1);
+      } else if (pressedKey == '[') {
+        var b = Game.BombGenerator.create('bomb2');
+        b.setMap(this.getMap());
+        this.getMap().addBomb(b,this.getAvatar2().getPos());
+      }else if (pressedKey == ']') {
+        this.getMap().clearWater();
+        console.dir (this.getMap().attr._bombsByLocation);
+        for (var a in this.getMap().attr._bombsByLocation) {
+          console.dir(a);
+          var b = this.getMap().attr._bombsByLocation[a];
+          console.dir (b);
+          if (b.hasMixin("Bomb2")){
+          b.explode();
+        }
+        }
+      } else if (pressedKey == '1') {
         var b = Game.BombGenerator.create('bomb');
         b.setMap(this.getMap());
-
-
-
         this.getMap().addBomb(b,this.getAvatar().getPos());
-
-
-
-      }else if (pressedKey == 'p') {
+      }else if (pressedKey == '2') {
         this.getMap().clearFire();
         console.dir (this.getMap().attr._bombsByLocation);
         for (var a in this.getMap().attr._bombsByLocation) {
           console.dir(a);
           var b = this.getMap().attr._bombsByLocation[a];
           console.dir (b);
+          if (b.hasMixin("Bomb1")){
           b.explode();
+        }
         }
       }
     }
@@ -270,10 +288,12 @@ Game.UIMode.gamePlay = {
   },
   setupNewGame: function () {
     this.setMap(new Game.Map('caves1'));
-    this.setAvatar(Game.EntityGenerator.create('avatar'));
+    this.setAvatar(Game.EntityGenerator.create('avatar1'));
+    this.setAvatar2(Game.EntityGenerator.create('avatar2'));
 
     this.getMap().addEntity(this.getAvatar(),this.getMap().getRandomWalkableLocation());
-    this.setCameraToAvatar();
+    this.getMap().addEntity(this.getAvatar2(),this.getMap().getRandomWalkableLocation());
+  //  this.setCameraToAvatar();
 
     // dev code - just add some entities to the map
     for (var ecount = 0; ecount < 40; ecount++) {
