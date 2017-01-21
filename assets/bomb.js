@@ -37,17 +37,38 @@ this.destroy(0,0);
  delete this.getMap().attr._bombsByLocation[this.getMap().attr._locationsByBomb[this.getId()]];
  delete this.getMap().attr._locationsByBomb[this.getId()];
  Game.renderDisplayAll();
- 
+
 };
 
 Game.Bomb.prototype.destroy = function (dx, dy) {
   var pos = this.getMap().attr._locationsByBomb[this.getId()];
-  console.log(pos);
+  //console.log(pos);
+
   var posArr = pos.split(',');
   var posX = posArr[0];
   var posY = posArr[1];
   var useX = (posX*1) + dx;
   var useY = (posY*1) + dy;
+  if (this.getMap().attr._entitiesByLocation[useX + ","+ useY]) {
+    console.log("chilling");
+    var a = ROT.RNG.getUniform();
+    if (a < 0.2 ){
+      var b = Game.ItemGenerator.create('health');
+      this.getMap().addItem(b,useX + "," + useY);
+      b.setMap(this.getMap());
+    }
+    else if(a < 0.3) {
+      var b = Game.ItemGenerator.create('damage');
+      this.getMap().addItem(b,useX + "," + useY);
+      b.setMap(this.getMap());
+    }
+    else if(a < 0.4) {
+      var b = Game.ItemGenerator.create('extra');
+      this.getMap().addItem(b,useX + "," + useY);
+      b.setMap(this.getMap());
+    }
+
+  }
   delete Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
   delete this.getMap().attr._entitiesByLocation[useX+","+useY];
   delete this.getMap().attr._locationsByEntity[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];

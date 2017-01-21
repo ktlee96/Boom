@@ -14,7 +14,7 @@ Game.EntityMixin.WalkerCorporeal = {
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
     }
-    console.log(targetX + ", " + targetY);
+    //console.log(targetX + ", " + targetY);
     if (map.getBombs(targetX,targetY)) { // can't walk into spaces occupied by other entities
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
@@ -22,6 +22,11 @@ Game.EntityMixin.WalkerCorporeal = {
     if (map.getTile(targetX,targetY)==Game.Tile.fireTile) {
       if (this.hasMixin('HitPoints')) {
         this.takeHits(2);
+      }
+    }
+    if (map.getItems(targetX,targetY)=='health') {
+      if (this.hasMixin('HitPoints')) {
+        this.takeHits(-2);
       }
     }
     if (map.getTile(targetX,targetY).isWalkable()) {
