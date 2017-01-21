@@ -19,7 +19,7 @@ Game.EntityMixin.WalkerCorporeal = {
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
     }
-    if (map.getTile(targetX,targetY)==Game.Tile.fireTile) {
+    if (map.getTile(targetX,targetY)==Game.Tile.fireTile||map.getTile(targetX,targetY)==Game.Tile.waterTile) {
       if (this.hasMixin('HitPoints')) {
         this.takeHits(2);
       }

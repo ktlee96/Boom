@@ -199,6 +199,10 @@ Game.UIMode.gamePlay = {
     display.drawText(1,2,"avatar x: "+this.getAvatar().getX(),fg,bg); // DEV
     display.drawText(1,3,"avatar y: "+this.getAvatar().getY(),fg,bg); // DEV
     display.drawText(1,4,"cur HP: "+this.getAvatar().getCurHp(),fg,bg);
+
+    display.drawText(1,6,"avatar2 x: "+this.getAvatar2().getX(),fg,bg); // DEV
+    display.drawText(1,7,"avatar2 y: "+this.getAvatar2().getY(),fg,bg); // DEV
+    display.drawText(1,8,"cur2 HP: "+this.getAvatar2().getCurHp(),fg,bg);
   },
   moveAvatar: function (dx,dy) {
     if (this.getAvatar().tryWalk(this.getMap(),dx,dy)) {
