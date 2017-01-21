@@ -24,6 +24,15 @@ Game.EntityMixin.WalkerCorporeal = {
         this.takeHits(2);
       }
     }
+    if (map.getItems(targetX,targetY)) {
+      if (map.getItems(targetX,targetY).hasMixin("Health")){
+      if (this.hasMixin('HitPoints')) {
+        delete Game.DATASTORE.ITEM[map.attr._entitiesByLocation[targetX + ","+ targetY]];
+        delete map.attr._itemsByLocation[targetX+","+targetY];
+        this.takeHits(-2);
+        }
+      }
+    }
     if (map.getTile(targetX,targetY).isWalkable()) {
       this.setPos(targetX,targetY);
       var myMap = this.getMap();

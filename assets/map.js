@@ -71,11 +71,9 @@ Game.Map.prototype.addEntity = function (ent,pos) {
 };
 
 Game.Map.prototype.addItem = function (itm,pos) {
-    var loc = pos.x+","+pos.y;
-    if (! this.attr._itemsByLocation[loc]) {
-      this.attr._itemsByLocation[loc] = [];
+    if (! this.attr._itemsByLocation[pos]) {
+      this.attr._itemsByLocation[pos] = itm;
     }
-    this.attr._itemsByLocation[loc].push(itm.getId());
 };
 
 Game.Map.prototype.addBomb = function (bomb,pos) {
@@ -129,8 +127,8 @@ Game.Map.prototype.getItems = function (x_or_pos,y) {
     useY = x_or_pos.y;
   }
   var itemIds = this.attr._itemsByLocation[useX+','+useY];
-  if (itemIds) { return itemIds.map(function(iid) { return Game.DATASTORE.ITEM[iid]; }); }
-  return  [];
+  if (itemIds) { return itemIds;; }
+  return  false;
 };
 
 Game.Map.prototype.getRandomLocation = function(filter_func) {
@@ -186,6 +184,10 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
       var bomb = this.getBombs(mapPos);
       if (bomb) {
         bomb.draw(display,x,y);
+      }
+      var item = this.getItems(mapPos);
+      if (item) {
+        item.draw(display,x,y);
       }
     }
   }

@@ -11,3 +11,10 @@ Game.Item = function(template) {
     Game.DATASTORE.ITEM[this.attr._id] = this;
 };
 Game.Item.extend(Game.SymbolActive);
+
+Game.Item.prototype.getMap = function() {
+    return Game.DATASTORE.MAP[this.attr._mapId];
+};
+Game.Item.prototype.setMap = function(map) {
+    this.attr._mapId = map.getId();
+};
