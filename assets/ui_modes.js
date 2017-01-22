@@ -241,19 +241,11 @@ Game.UIMode.gamePlay = {
         this.moveAvatar(1,0);
       } else if (pressedKey == 'w') {
         this.moveAvatar(0,-1);
-      } else if (pressedKey == '5') {
-        this.moveAvatar2(0,1);
-      } else if (pressedKey == '4') {
-        this.moveAvatar2(-1,0);
-      } else if (pressedKey == '6') {
-        this.moveAvatar2(1,0);
-      } else if (pressedKey == '8') {
-        this.moveAvatar2(0,-1);
-      } else if (pressedKey == '[') {
+      } else if (pressedKey == ',') {
         var b = Game.BombGenerator.create('bomb2');
         b.setMap(this.getMap());
         this.getMap().addBomb(b,this.getAvatar2().getPos());
-      }else if (pressedKey == ']') {
+      }else if (pressedKey == '.') {
         this.getMap().clearWater();
         console.dir (this.getMap().attr._bombsByLocation);
         for (var a in this.getMap().attr._bombsByLocation) {
@@ -261,8 +253,8 @@ Game.UIMode.gamePlay = {
           var b = this.getMap().attr._bombsByLocation[a];
           console.dir (b);
           if (b.hasMixin("Bomb2")){
-          b.explode();
-        }
+            b.explode();
+          }
         }
       } else if (pressedKey == '1') {
         var b = Game.BombGenerator.create('bomb');
@@ -276,19 +268,21 @@ Game.UIMode.gamePlay = {
           var b = this.getMap().attr._bombsByLocation[a];
           console.dir (b);
           if (b.hasMixin("Bomb1")){
-          b.explode();
+            b.explode();
+          }
         }
-        }
       }
-    }
-    else if (inputType == 'keydown') {
-      if (inputData.keyCode == 27) { // 'Escape'
-        Game.switchUiMode(Game.UIMode.gameLose);
-      }
-      else if (inputData.keyCode == 187) { // '='
-        Game.switchUiMode(Game.UIMode.gamePersistence);
-      }
-    }
+    } else if (inputType == 'keydown') {
+     if (inputData.keyCode == ROT.VK_LEFT) { // 'Escape'
+       this.moveAvatar2(-1,0);
+     } else if (inputData.keyCode == ROT.VK_RIGHT) { // '='
+       this.moveAvatar2(1,0);
+     } else if (inputData.keyCode == ROT.VK_UP) { // '='
+       this.moveAvatar2(0,-1);
+     } else if (inputData.keyCode == ROT.VK_DOWN) { // '='
+       this.moveAvatar2(0,1);
+     }
+   }
   },
   setupNewGame: function () {
     this.setMap(new Game.Map('caves1'));
