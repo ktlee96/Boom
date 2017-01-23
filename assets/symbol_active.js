@@ -70,8 +70,6 @@ Game.SymbolActive.prototype.hasMixin = function(checkThis) {
 };
 
 Game.SymbolActive.prototype.raiseSymbolActiveEvent = function(evtLabel,evtData) {
-  // console.log('raiseSymbolActiveEvent '+evtLabel);
-  // console.dir(JSON.parse(JSON.stringify(evtData)));
   var response = {};
   for (var i = 0; i < this._mixins.length; i++) {
     var mixin = this._mixins[i];
@@ -86,12 +84,4 @@ Game.SymbolActive.prototype.raiseSymbolActiveEvent = function(evtLabel,evtData) 
     }
   }
   return response;
-};
-
-Game.SymbolActive.prototype.toJSON = function () {
-  var json = Game.UIMode.gamePersistence.BASE_toJSON.call(this);
-  return json;
-};
-Game.SymbolActive.prototype.fromJSON = function (json) {
-  Game.UIMode.gamePersistence.BASE_fromJSON.call(this,json);
 };

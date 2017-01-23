@@ -3,10 +3,12 @@ Game.UIMode.DEFAULT_COLOR_FG = '#fff';
 Game.UIMode.DEFAULT_COLOR_BG = '#000';
 Game.UIMode.DEFAULT_COLOR_STR = '%c{'+Game.UIMode.DEFAULT_COLOR_FG+'}%b{'+Game.UIMode.DEFAULT_COLOR_BG+'}';
 
+//#############################################################################################################################
+//#############################################################################################################################
+
 Game.UIMode.gameStart = {
   enter: function () {
-    //console.log('game starting');
-    Game.Message.send("press any key to continue");
+    Game.Message.send("press [shift] to continue");
     Game.refresh();
   },
   exit: function () {
@@ -28,95 +30,34 @@ Game.UIMode.gameStart = {
     display.drawText(1,20,"%c{#000}.%c{}                                         By: D.Lee & H.Sheng",fg,bg);
   },
   handleInput: function (inputType,inputData) {
-    if (inputData.charCode !== 0) { // ignore the various modding keys - control, shift, etc.
-      Game.switchUiMode(Game.UIMode.gamePersistence);
+    if (inputData.keyCode == ROT.VK_SHIFT) { // ignore the various modding keys - control, shift, etc.
+      Game.switchUiMode(Game.UIMode.gameInitial);
     }
   }
 };
 
-Game.UIMode.gamePersistence = {
+//#############################################################################################################################
+//#############################################################################################################################
+
+Game.UIMode.gameInitial = {
   RANDOM_SEED_KEY: 'gameRandomSeed',
   enter: function () {
+    Game.Message.clear();
     Game.refresh();
-    //console.log('game persistence');
   },
   exit: function () {
     Game.refresh();
   },
   render: function (display) {
-    var fg = Game.UIMode.DEFAULT_COLOR_FG;
-    var bg = Game.UIMode.DEFAULT_COLOR_BG;
-    display.drawText(1,3,"press S to save the current game, L to load the saved game, or N start a new one",fg,bg);
+    display.drawText(1,3,"press [ctrl] to view game controls");
+    display.drawText(1,4,"press [space] to start a new game");
   },
   handleInput: function (inputType,inputData) {
-
-    var inputChar = String.fromCharCode(inputData.charCode);
-    if (inputChar == 'S') { // ignore the various modding keys - control, shift, etc.
-      this.saveGame();
-    } else if (inputChar == 'L') {
-      this.restoreGame();
-    } else if (inputChar == 'N') {
+    if (inputData.keyCode == ROT.VK_CONTROL) {
+      Game.switchUiMode(Game.UIMode.gameMenu)
+    }
+    else if (inputData.keyCode == ROT.VK_SPACE) {
       this.newGame();
-    }
-  },
-  saveGame: function () {
-    if (this.localStorageAvailable()) {
-      Game.DATASTORE.GAME_PLAY = Game.UIMode.gamePlay.attr;
-      window.localStorage.setItem(Game._PERSISTANCE_NAMESPACE, JSON.stringify(Game.DATASTORE));
-      Game.switchUiMode(Game.UIMode.gamePlay);
-    }
-  },
-  restoreGame: function () {
-    if (this.localStorageAvailable()) {
-      var json_state_data = window.localStorage.getItem(Game._PERSISTANCE_NAMESPACE);
-      var state_data = JSON.parse(json_state_data);
-
-      this._resetGameDataStructures();
-
-      // game level stuff
-      Game.setRandomSeed(state_data[this.RANDOM_SEED_KEY]);
-
-      // maps
-      for (var mapId in state_data.MAP) {
-        if (state_data.MAP.hasOwnProperty(mapId)) {
-          var mapAttr = JSON.parse(state_data.MAP[mapId]);
-          // console.log("restoring map "+mapId+" with attributes:");
-          // console.dir(mapAttr);
-          Game.DATASTORE.MAP[mapId] = new Game.Map(mapAttr._mapTileSetName);
-          Game.DATASTORE.MAP[mapId].fromJSON(state_data.MAP[mapId]);
-        }
-      }
-
-      // entities
-      for (var entityId in state_data.ENTITY) {
-        if (state_data.ENTITY.hasOwnProperty(entityId)) {
-          var entAttr = JSON.parse(state_data.ENTITY[entityId]);
-          Game.DATASTORE.ENTITY[entityId] = Game.EntityGenerator.create(entAttr._generator_template_key);
-          Game.DATASTORE.ENTITY[entityId].fromJSON(state_data.ENTITY[entityId]);
-        }
-      }
-
-      for (var itemId in state_data.ITEM) {
-         if (state_data.ITEM.hasOwnProperty(itemId)) {
-           var itemAttr = JSON.parse(state_data.ITEM[itemId]);
-           var newI = Game.ItemGenerator.create(itemAttr._generator_template_key,itemAttr._id);
-           Game.DATASTORE.ITEM[itemId] = newI;
-           Game.DATASTORE.ITEM[itemId].fromJSON(state_data.ITEM[itemId]);
-         }
-       }
-       for (var bombId in state_data.BOMB) {
-          if (state_data.BOMB.hasOwnProperty(bombId)) {
-            var bombAttr = JSON.parse(state_data.BOMB[bombId]);
-            var newI = Game.BombGenerator.create(bombAttr._generator_template_key,bombAttr._id);
-            Game.DATASTORE.BOMB[bombId] = newI;
-            Game.DATASTORE.BOMB[bombId].fromJSON(state_data.BOMB[bombId]);
-          }
-        }
-
-      // game play
-      Game.UIMode.gamePlay.attr = state_data.GAME_PLAY;
-
-      Game.switchUiMode(Game.UIMode.gamePlay);
     }
   },
   newGame: function () {
@@ -144,23 +85,49 @@ Game.UIMode.gamePersistence = {
   		return false;
   	}
   },
-  BASE_toJSON: function(state_hash_name) {
-    var state = this.attr;
-    if (state_hash_name) {
-      state = this[state_hash_name];
-    }
-    var json = JSON.stringify(state);
+};
 
-    return json;
+//#############################################################################################################################
+//#############################################################################################################################
+
+Game.UIMode.gameMenu = {
+  enter: function () {
+    Game.Message.clear();
+    Game.refresh();
+    Game.Message.send("press any key to go back");
   },
-  BASE_fromJSON: function (json,state_hash_name) {
-    var using_state_hash = 'attr';
-    if (state_hash_name) {
-      using_state_hash = state_hash_name;
+  exit: function () {
+    Game.refresh();
+  },
+  render: function (display) {
+    display.drawText(1,1,"Avatar1 Controls");
+    display.drawText(2,3,"Moving Keys:")
+    display.drawText(5,5,"a");
+    display.drawText(7,5,"d");
+    display.drawText(6,4,"w");
+    display.drawText(6,5,"s");
+
+    display.drawText(1,7,"Drop Bomb: 1");
+    display.drawText(1,8,"Detonate Bomb: 2");
+
+    display.drawText(25,1,"Avatar2 Controls");
+    display.drawText(25,2,"Left: ArrowLeft");
+    display.drawText(25,3,"Right: ArrowRight");
+    display.drawText(25,4,"Up: ArrowUp");
+    display.drawText(25,5,"Down: ArrowDown");
+    display.drawText(25,6,"Drop Bomb: ,");
+    display.drawText(25,7,"Detonate Bomb: .");
+
+  },
+  handleInput: function (inputType,inputData) {
+    if (inputData.charCode !== 0) { // ignore the various modding keys - control, shift, etc.
+      Game.switchUiMode(Game.UIMode.gameInitial);
     }
-    this[using_state_hash] = JSON.parse(json);
   }
 };
+
+//#############################################################################################################################
+//#############################################################################################################################
 
 Game.UIMode.gamePlay = {
   attr: {
@@ -314,47 +281,90 @@ Game.UIMode.gamePlay = {
 
     this.getMap().addEntity(this.getAvatar(),this.getMap().getRandomWalkableLocation());
     this.getMap().addEntity(this.getAvatar2(),this.getMap().getRandomWalkableLocation());
-  //  this.setCameraToAvatar();
 
     // dev code - just add some entities to the map
     for (var ecount = 0; ecount < 40; ecount++) {
       this.getMap().addEntity(Game.EntityGenerator.create('moss'),this.getMap().getRandomWalkableLocation());
     }
-
-  },
-  toJSON: function() {
-    return Game.UIMode.gamePersistence.BASE_toJSON.call(this);
-  },
-  fromJSON: function (json) {
-    Game.UIMode.gamePersistence.BASE_fromJSON.call(this,json);
   }
 };
+
+//#############################################################################################################################
+//#############################################################################################################################
 
 Game.UIMode.gameWin1 = {
   enter: function () {
+    Game.Message.clear();
+    Game.Message.send("press [space] to play again")
   },
   exit: function () {
   },
   render: function (display) {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
     var bg = Game.UIMode.DEFAULT_COLOR_BG;
-    display.drawText(1,1,"Avatar 1 WON!!!!",fg,bg);
+    display.drawText(1,1,"Avatar 1 has obtained the time machine!!!!");
+    display.drawText(5,3,"%c{#000}.%c{}       ___");
+    display.drawText(5,4,"_______(_@_)_______");
+    display.drawText(5,5,"| POLICE      BOX |");
+    display.drawText(5,6,"|_________________|");
+    display.drawText(5,7,"%c{#000}.%c{}| _____ | _____ |");
+    display.drawText(5,8,"%c{#000}.%c{}| |###| | |###| |");
+    display.drawText(5,9,"%c{#000}.%c{}| |###| | |###| |");
+    display.drawText(5,10,"%c{#000}.%c{}| _____ | _____ |");
+    display.drawText(5,11,"%c{#000}.%c{}| || || | || || |");
+    display.drawText(5,12,"%c{#000}.%c{}| ||_|| | ||_|| |");
+    display.drawText(5,13,"%c{#000}.%c{}| _____ |$_____ |");
+    display.drawText(5,14,"%c{#000}.%c{}| || || | || || |");
+    display.drawText(5,15,"%c{#000}.%c{}| ||_|| | ||_|| |");
+    display.drawText(5,16,"%c{#000}.%c{}| _____ | _____ |");
+    display.drawText(5,17,"%c{#000}.%c{}| || || | || || |");
+    display.drawText(5,18,"%c{#000}.%c{}| ||_|| | ||_|| |");
+    display.drawText(5,19,"%c{#000}.%c{}|       |       |");
+    display.drawText(5,20,"%c{#000}.%c{}*****************");
   },
   handleInput: function (inputType,inputData) {
-    Game.Message.clear();
+    if (inputData.keyCode == ROT.VK_SPACE) {
+      Game.switchUiMode(Game.UIMode.gameStart);
+    }
   }
 };
+
+//#############################################################################################################################
+//#############################################################################################################################
+
 Game.UIMode.gameWin2 = {
   enter: function () {
+    Game.Message.clear();
+    Game.Message.send("press [space] to play again")
   },
   exit: function () {
   },
   render: function (display) {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
     var bg = Game.UIMode.DEFAULT_COLOR_BG;
-    display.drawText(1,1,"Avatar 2 WON!!!!",fg,bg);
+    display.drawText(1,1,"Avatar 2 has obtained the time machine!!!!");
+    display.drawText(5,3,"%c{#000}.%c{}       ___");
+    display.drawText(5,4,"_______(_@_)_______");
+    display.drawText(5,5,"| POLICE      BOX |");
+    display.drawText(5,6,"|_________________|");
+    display.drawText(5,7,"%c{#000}.%c{}| _____ | _____ |");
+    display.drawText(5,8,"%c{#000}.%c{}| |###| | |###| |");
+    display.drawText(5,9,"%c{#000}.%c{}| |###| | |###| |");
+    display.drawText(5,10,"%c{#000}.%c{}| _____ | _____ |");
+    display.drawText(5,11,"%c{#000}.%c{}| || || | || || |");
+    display.drawText(5,12,"%c{#000}.%c{}| ||_|| | ||_|| |");
+    display.drawText(5,13,"%c{#000}.%c{}| _____ |$_____ |");
+    display.drawText(5,14,"%c{#000}.%c{}| || || | || || |");
+    display.drawText(5,15,"%c{#000}.%c{}| ||_|| | ||_|| |");
+    display.drawText(5,16,"%c{#000}.%c{}| _____ | _____ |");
+    display.drawText(5,17,"%c{#000}.%c{}| || || | || || |");
+    display.drawText(5,18,"%c{#000}.%c{}| ||_|| | ||_|| |");
+    display.drawText(5,19,"%c{#000}.%c{}|       |       |");
+    display.drawText(5,20,"%c{#000}.%c{}*****************");
   },
   handleInput: function (inputType,inputData) {
-    Game.Message.clear();
+    if (inputData.keyCode == ROT.VK_SPACE) {
+      Game.switchUiMode(Game.UIMode.gameStart);
+    }
   }
 };
