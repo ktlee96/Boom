@@ -133,11 +133,4 @@ var Game = {
     }
     this.renderDisplayAll();
   }
-
-  // toJSON: function() {
-  //   var json = {};
-  //   json._randomSeed = this._randomSeed;
-  //   json[Game.UIMode.gamePlay.JSON_KEY] = Game.UIMode.gamePlay.toJSON();
-  //   return json;
-  // }
 };

@@ -9,10 +9,12 @@ Game.ItemGenerator.learn({
 Game.ItemGenerator.learn({
   name: 'damage',
   chr:'🔋',
-  fg:'#aaa'
+  fg:'#aaa',
+  mixins: ["Range"]
 });
 Game.ItemGenerator.learn({
   name: 'extra',
   chr:'🔵',
-  fg:'#aaa'
+  fg:'#aaa',
+  mixins: ["Num"]
 });

@@ -26,12 +26,25 @@ Game.Bomb.prototype.setMap = function(map) {
 };
 
 Game.Bomb.prototype.explode = function () {
+  if (this.hasMixin("Bomb1")){
+    for (var a = 1; a <= Game.UIMode.gamePlay.getAvatar().getBombRange();a ++ ){
+    this.destroy(a,0);
+    this.destroy(0,a);
+    this.destroy(-a,0);
+    this.destroy(0,-a);}
 
-this.destroy(1,0);
-this.destroy(0,1);
-this.destroy(-1,0);
-this.destroy(0,-1);
-this.destroy(0,0);
+  }
+  else if (this.hasMixin("Bomb2")){
+    for (var a = 1; a <= Game.UIMode.gamePlay.getAvatar2().getBombRange();a ++ ){
+    this.destroy(a,0);
+    this.destroy(0,a);
+    this.destroy(-a,0);
+    this.destroy(0,-a);
+}
+  }
+
+  this.destroy(0,0);
+
 
  delete Game.DATASTORE.BOMB[this.getId()];
  delete this.getMap().attr._bombsByLocation[this.getMap().attr._locationsByBomb[this.getId()]];
@@ -42,14 +55,20 @@ this.destroy(0,0);
 
 Game.Bomb.prototype.destroy = function (dx, dy) {
   var pos = this.getMap().attr._locationsByBomb[this.getId()];
-  console.log(pos);
+  //console.log(pos);
   var posArr = pos.split(',');
   var posX = posArr[0];
   var posY = posArr[1];
   var useX = (posX*1) + dx;
   var useY = (posY*1) + dy;
   if (this.getMap().attr._entitiesByLocation[useX + ","+ useY]) {
-   console.log("chilling");
+    console.log ("entities at: " +useX + "," + useY);
+    var a = Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + "," + useY]];
+    if(a.getName()=="avatar1"||a.getName()=="avatar2") {
+      a.takeHits(8);
+    }
+    else{
+  // console.log("chilling");
    var a = ROT.RNG.getUniform();
    if (a < 0.2 ){
      var b = Game.ItemGenerator.create('health');
@@ -66,10 +85,12 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
      this.getMap().addItem(b,useX + "," + useY);
      b.setMap(this.getMap());
    }
- }
-  delete Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
-  delete this.getMap().attr._entitiesByLocation[useX+","+useY];
-  delete this.getMap().attr._locationsByEntity[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
+   delete Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
+   delete this.getMap().attr._entitiesByLocation[useX+","+useY];
+   delete this.getMap().attr._locationsByEntity[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
+ }}
+
+
   if (this.getMap().getTile(useX , useY) != Game.Tile.decTile&&this.getMap().getTile(useX , useY) != Game.Tile.wallTile&&this.getMap().getTile(useX , useY) != Game.Tile.everTile){
     if (this.hasMixin("Bomb1")){
   this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}

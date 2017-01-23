@@ -1,7 +1,43 @@
 Game.EntityMixin = {};
 
 // Mixins have a META property is is info about/for the mixin itself and then all other properties. The META property is NOT copied into objects for which this mixin is used - all other properies ARE copied in.
+Game.EntityMixin.Bomberman = {
+  META: {
+    mixinName: 'Bomberman' ,
+    stateNamespace: '_Bomberman_attr',
+    stateModel: {
+      bombRange: 1,
+      bombNum: 2,
+      curBombNum: 2
+  }
 
+  },
+  getBombRange: function() {
+    return this.attr._Bomberman_attr.bombRange;
+  },
+  getCurBomb: function() {
+    return this.attr._Bomberman_attr.curBombNum;
+  },
+  addBombRange: function() {
+    console.log("add bomb range");
+    this.attr._Bomberman_attr.bombRange++;
+  },
+  addBombNum: function() {
+    console.log("add bomb num");
+    this.attr._Bomberman_attr.bombNum++;
+    this.attr._Bomberman_attr.curBombNum++;
+  },
+
+  detonate:function (){
+    this.attr._Bomberman_attr.curBombNum--;
+  },
+
+  resetBombs: function() {
+    this.attr._Bomberman_attr.curBombNum = this.attr._Bomberman_attr.bombNum;
+  }
+
+
+}
 Game.EntityMixin.WalkerCorporeal = {
   META: {
     mixinName: 'WalkerCorporeal',
@@ -14,25 +50,43 @@ Game.EntityMixin.WalkerCorporeal = {
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
     }
-    console.log(targetX + ", " + targetY);
     if (map.getBombs(targetX,targetY)) { // can't walk into spaces occupied by other entities
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
     }
-    if (map.getTile(targetX,targetY)==Game.Tile.fireTile||map.getTile(targetX,targetY)==Game.Tile.waterTile) {
+    if ((map.getTile(targetX,targetY)==Game.Tile.fireTile&&this.getName() == "avatar2")||(map.getTile(targetX,targetY)==Game.Tile.waterTile&&this.getName() == "avatar1")) {
       if (this.hasMixin('HitPoints')) {
         this.takeHits(2);
       }
     }
-    if (map.getItems(targetX,targetY)) {
-      if (map.getItems(targetX,targetY).hasMixin("Health")){
-      if (this.hasMixin('HitPoints')) {
-        delete Game.DATASTORE.ITEM[map.attr._entitiesByLocation[targetX + ","+ targetY]];
-        delete map.attr._itemsByLocation[targetX+","+targetY];
-        this.takeHits(-2);
+    var mapTargetItems = map.getItems(targetX,targetY);
+    if (mapTargetItems) {
+
+      if (mapTargetItems.hasMixin("Range")){
+        if (this.hasMixin('Bomberman')) {
+          delete Game.DATASTORE.ITEM[map.attr._itemsByLocation[targetX + ","+ targetY]];
+          delete map.attr._itemsByLocation[targetX+","+targetY];
+          this.addBombRange();
+          }
+      }
+
+      if (mapTargetItems.hasMixin("Num")){
+        if (this.hasMixin('Bomberman')) {
+          delete Game.DATASTORE.ITEM[map.attr._itemsByLocation[targetX + ","+ targetY]];
+          delete map.attr._itemsByLocation[targetX+","+targetY];
+          this.addBombNum();
         }
       }
+
+      if (mapTargetItems.hasMixin("Health")){
+        if (this.hasMixin('HitPoints')) {
+          delete Game.DATASTORE.ITEM[map.attr._itemsByLocation[targetX + ","+ targetY]];
+          delete map.attr._itemsByLocation[targetX+","+targetY];
+          this.takeHits(-2);
+          }
+      }
     }
+
     if (map.getTile(targetX,targetY).isWalkable()) {
       this.setPos(targetX,targetY);
       var myMap = this.getMap();

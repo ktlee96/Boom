@@ -6,7 +6,7 @@ Game.UIMode.DEFAULT_COLOR_STR = '%c{'+Game.UIMode.DEFAULT_COLOR_FG+'}%b{'+Game.U
 Game.UIMode.gameStart = {
   enter: function () {
     //console.log('game starting');
-    Game.Message.send("Welcome to WSRL");
+    Game.Message.send("press any key to continue");
     Game.refresh();
   },
   exit: function () {
@@ -15,8 +15,17 @@ Game.UIMode.gameStart = {
   render: function (display) {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
     var bg = Game.UIMode.DEFAULT_COLOR_BG;
-    display.drawText(1,1,"game start",fg,bg);
-    display.drawText(1,3,"press any key to continue",fg,bg);
+    var baseLine = 4;
+    display.drawText(1,1 +baseLine,"%c{#000}.%c{} ________   ________   ________   _____ ______    ___       ");
+    display.drawText(1,2+baseLine,"%c{#000}.%c{}|\\   __  \\ |\\   __  \\ |\\   __  \\ |\\   _ \\  _   \\ |\\  \\      ");
+    display.drawText(1,3+baseLine,"%c{#000}.%c{}\\ \\  \\|\\ /_\\ \\  \\|\\  \\\\ \\  \\|\\  \\\\ \\  \\\\\\__\\ \\  \\\\ \\  \\     ");
+    display.drawText(1,4+baseLine,"%c{#000}.%c{} \\ \\   __  \\\\ \\  \\\\\\  \\\\ \\  \\\\\\  \\\\ \\  \\\\|__| \\  \\\\ \\  \\    ");
+    display.drawText(1,5+baseLine,"%c{#000}.%c{}  \\ \\  \\|\\  \\\\ \\  \\\\\\  \\\\ \\  \\\\\\  \\\\ \\  \\    \\ \\  \\\\ \\__\\   ");
+    display.drawText(1,6+baseLine,"%c{#000}.%c{}   \\ \\_______\\\\ \\_______\\\\ \\_______\\\\ \\__\\    \\ \\__\\\\|__|   ");
+    display.drawText(1,7+baseLine,"%c{#000}.%c{}    \\|_______| \\|_______| \\|_______| \\|__|     \\|__|    ___ ");
+    display.drawText(1,8+baseLine,"%c{#000}.%c{}                                                       |\\__\\");
+    display.drawText(1,9+baseLine,"%c{#000}.%c{}                                                       \\|__|" );
+    display.drawText(1,20,"%c{#000}.%c{}                                         By: D.Lee & H.Sheng",fg,bg);
   },
   handleInput: function (inputType,inputData) {
     if (inputData.charCode !== 0) { // ignore the various modding keys - control, shift, etc.
@@ -159,7 +168,7 @@ Game.UIMode.gamePlay = {
     _cameraX: 100,
     _cameraY: 100,
     _avatarId: '',
-    _avatar2Id: ''
+    _avatar2Id: '',
   },
   JSON_KEY: 'uiMode_gamePlay',
   enter: function () {
@@ -242,11 +251,15 @@ Game.UIMode.gamePlay = {
       } else if (pressedKey == 'w') {
         this.moveAvatar(0,-1);
       } else if (pressedKey == ',') {
+        if (this.getAvatar2().getCurBomb()>=1){
         var b = Game.BombGenerator.create('bomb2');
         b.setMap(this.getMap());
         this.getMap().addBomb(b,this.getAvatar2().getPos());
+        this.getAvatar2().detonate();
+      }
       }else if (pressedKey == '.') {
         this.getMap().clearWater();
+        this.getAvatar2().resetBombs();
         console.dir (this.getMap().attr._bombsByLocation);
         for (var a in this.getMap().attr._bombsByLocation) {
           console.dir(a);
@@ -257,11 +270,15 @@ Game.UIMode.gamePlay = {
           }
         }
       } else if (pressedKey == '1') {
+        if (this.getAvatar().getCurBomb()>=1){
         var b = Game.BombGenerator.create('bomb');
         b.setMap(this.getMap());
         this.getMap().addBomb(b,this.getAvatar().getPos());
+        this.getAvatar().detonate();
+      }
       }else if (pressedKey == '2') {
         this.getMap().clearFire();
+        this.getAvatar().resetBombs();
         console.dir (this.getMap().attr._bombsByLocation);
         for (var a in this.getMap().attr._bombsByLocation) {
           console.dir(a);
@@ -282,6 +299,12 @@ Game.UIMode.gamePlay = {
      } else if (inputData.keyCode == ROT.VK_DOWN) { // '='
        this.moveAvatar2(0,1);
      }
+   }
+   if (this.getAvatar().getCurHp() <= 0){
+     Game.switchUiMode(Game.UIMode.gameWin2);
+   }
+   if (this.getAvatar2().getCurHp() <= 0){
+     Game.switchUiMode(Game.UIMode.gameWin1);
    }
   },
   setupNewGame: function () {
@@ -307,32 +330,29 @@ Game.UIMode.gamePlay = {
   }
 };
 
-Game.UIMode.gameWin = {
+Game.UIMode.gameWin1 = {
   enter: function () {
-    console.log('game winning');
   },
   exit: function () {
   },
   render: function (display) {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
     var bg = Game.UIMode.DEFAULT_COLOR_BG;
-    display.drawText(1,1,"You WON!!!!",fg,bg);
+    display.drawText(1,1,"Avatar 1 WON!!!!",fg,bg);
   },
   handleInput: function (inputType,inputData) {
     Game.Message.clear();
   }
 };
-
-Game.UIMode.gameLose = {
+Game.UIMode.gameWin2 = {
   enter: function () {
-    console.log('game losing');
   },
   exit: function () {
   },
   render: function (display) {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
     var bg = Game.UIMode.DEFAULT_COLOR_BG;
-    display.drawText(1,1,"You lost :(",fg,bg);
+    display.drawText(1,1,"Avatar 2 WON!!!!",fg,bg);
   },
   handleInput: function (inputType,inputData) {
     Game.Message.clear();

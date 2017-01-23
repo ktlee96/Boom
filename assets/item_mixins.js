@@ -5,3 +5,16 @@ Game.ItemMixin.Health = {
     mixinName: 'Health'
   },
 };
+
+Game.ItemMixin.Num = {
+  META: {
+    mixinName: 'Num'
+  },
+};
+
+
+Game.ItemMixin.Range = {
+  META: {
+    mixinName: 'Range'
+  },
+};
