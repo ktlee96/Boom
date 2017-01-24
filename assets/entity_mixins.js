@@ -59,6 +59,7 @@ Game.EntityMixin.WalkerCorporeal = {
         this.takeHits(2);
       }
     }
+
     var mapTargetItems = map.getItems(targetX,targetY);
     if (mapTargetItems) {
 
@@ -88,7 +89,13 @@ Game.EntityMixin.WalkerCorporeal = {
     }
 
     if (map.getTile(targetX,targetY).isWalkable()) {
-      this.setPos(targetX,targetY);
+      if (map.getTile(targetX,targetY) == Game.Tile.teleportTile) {
+        var a = Game.util.randomInt(0,3);
+        var pos = map.attr._teleportPos[a];
+        this.setPos(pos);
+      }
+      else{
+      this.setPos(targetX,targetY);}
       var myMap = this.getMap();
       if (myMap) {
         myMap.updateEntityLocation(this);

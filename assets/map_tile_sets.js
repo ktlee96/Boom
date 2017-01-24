@@ -2,6 +2,7 @@ Game.MapTileSets = {
   caves1: {
     _width: 78,
     _height: 20,
+    _teleport:4,
     getMapTiles: function () {
       var mapTiles = Game.util.init2DArray(this._width,this._height,Game.Tile.nullTile);
       var generator = new ROT.Map.Rogue(this._width,this._height);
@@ -15,8 +16,9 @@ Game.MapTileSets = {
 
       // run again then update map
       generator.create(function(x,y,v) {
+        var a = ROT.RNG.getUniform();
         if (v === 1) {
-          var a = ROT.RNG.getUniform();
+          //var a = ROT.RNG.getUniform();
           if (a < 0.2 ){
             mapTiles[x][y]= Game.Tile.decTile;
           }
@@ -25,10 +27,12 @@ Game.MapTileSets = {
           }
           else {
           mapTiles[x][y] = Game.Tile.wallTile;}
-        } else {
+        } 
+          //var a = ROT.RNG.getUniform();
+          else{
           mapTiles[x][y] = Game.Tile.floorTile;
-        }
-      });
+
+        }});
       return mapTiles;
     }
   },

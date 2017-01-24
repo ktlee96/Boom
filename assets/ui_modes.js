@@ -18,7 +18,7 @@ Game.UIMode.gameStart = {
     var fg = Game.UIMode.DEFAULT_COLOR_FG;
     var bg = Game.UIMode.DEFAULT_COLOR_BG;
     var baseLine = 4;
-    display.drawText(1,1 +baseLine,"%c{#000}.%c{} ________   ________   ________   _____ ______    ___       ");
+    display.drawText(1,1+baseLine,"%c{#000}.%c{} ________   ________   ________   _____ ______    ___       ");
     display.drawText(1,2+baseLine,"%c{#000}.%c{}|\\   __  \\ |\\   __  \\ |\\   __  \\ |\\   _ \\  _   \\ |\\  \\      ");
     display.drawText(1,3+baseLine,"%c{#000}.%c{}\\ \\  \\|\\ /_\\ \\  \\|\\  \\\\ \\  \\|\\  \\\\ \\  \\\\\\__\\ \\  \\\\ \\  \\     ");
     display.drawText(1,4+baseLine,"%c{#000}.%c{} \\ \\   __  \\\\ \\  \\\\\\  \\\\ \\  \\\\\\  \\\\ \\  \\\\|__| \\  \\\\ \\  \\    ");
@@ -281,10 +281,19 @@ Game.UIMode.gamePlay = {
 
     this.getMap().addEntity(this.getAvatar(),this.getMap().getRandomWalkableLocation());
     this.getMap().addEntity(this.getAvatar2(),this.getMap().getRandomWalkableLocation());
-
+    this.getMap().updateEntityLocation(this.getAvatar());
+    this.getMap().updateEntityLocation(this.getAvatar2());
     // dev code - just add some entities to the map
     for (var ecount = 0; ecount < 40; ecount++) {
-      this.getMap().addEntity(Game.EntityGenerator.create('moss'),this.getMap().getRandomWalkableLocation());
+      var a = Game.EntityGenerator.create('moss');
+      this.getMap().addEntity(a,this.getMap().getRandomWalkableLocation());
+      this.getMap().updateEntityLocation(a);
+    }
+    for (var ecount = 0; ecount < 4; ecount++) {
+      var pos = this.getMap().getRandomWalkableLocation();
+      this.getMap().setTile(Game.Tile.teleportTile,pos);
+      this.getMap().attr._teleportPos[ecount] = pos;
+      console.dir(pos);
     }
   }
 };

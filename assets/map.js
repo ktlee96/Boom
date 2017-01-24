@@ -15,7 +15,8 @@ Game.Map = function (mapTileSetName) {
     _locationsByEntity: {},
     _itemsByLocation: {},
     _bombsByLocation: {},
-    _locationsByBomb: {}
+    _locationsByBomb: {},
+    _teleportPos: {}
   };
 
   Game.DATASTORE.MAP[this.attr._id] = this;
@@ -44,6 +45,14 @@ Game.Map.prototype.getTile = function (x_or_pos,y) {
   }
   return this._tiles[useX][useY] || Game.Tile.nullTile;
 };
+Game.Map.prototype.setTile = function (tile, x_or_pos,y) {
+  var useX = x_or_pos, useY=y;
+  if (typeof x_or_pos == 'object') {
+    useX = x_or_pos.x;
+    useY = x_or_pos.y;
+  }
+  this._tiles[useX][useY] = tile;
+}
 Game.Map.prototype.clearFire = function (){
   for (var a = 0; a < this.attr._width; a ++) {
     for (var b =0 ;  b< this.attr._height; b++) {
