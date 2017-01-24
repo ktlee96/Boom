@@ -64,37 +64,47 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
   if (this.getMap().attr._entitiesByLocation[useX + ","+ useY]) {
     console.log ("entities at: " +useX + "," + useY);
     var a = Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + "," + useY]];
-    if(a.getName()=="avatar1"||a.getName()=="avatar2") {
+    if(a.getName()=="avatar1"){
+      Game.Message.send("Player1 has been hit by a bomb");
+      Game.renderDisplayMessage();
+      a.takeHits(8);
+    } else if(a.getName()=="avatar2"){
+      Game.Message.send("Player2 has been hit by a bomb");
+      Game.renderDisplayMessage();
       a.takeHits(8);
     }
     else{
-  // console.log("chilling");
-   var a = ROT.RNG.getUniform();
-   if (a < 0.2 ){
-     var b = Game.ItemGenerator.create('health');
-     this.getMap().addItem(b,useX + "," + useY);
-     b.setMap(this.getMap());
+     var a = ROT.RNG.getUniform();
+       if (a < 0.2 ){
+         var b = Game.ItemGenerator.create('health');
+         this.getMap().addItem(b,useX + "," + useY);
+         b.setMap(this.getMap());
+       }
+       else if(a < 0.3) {
+         var b = Game.ItemGenerator.create('damage');
+         this.getMap().addItem(b,useX + "," + useY);
+         b.setMap(this.getMap());
+       }
+       else if(a < 0.4) {
+         var b = Game.ItemGenerator.create('extra');
+         this.getMap().addItem(b,useX + "," + useY);
+         b.setMap(this.getMap());
+       }
+       delete Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
+       delete this.getMap().attr._entitiesByLocation[useX+","+useY];
+       delete this.getMap().attr._locationsByEntity[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
+     }
    }
-   else if(a < 0.3) {
-     var b = Game.ItemGenerator.create('damage');
-     this.getMap().addItem(b,useX + "," + useY);
-     b.setMap(this.getMap());
-   }
-   else if(a < 0.4) {
-     var b = Game.ItemGenerator.create('extra');
-     this.getMap().addItem(b,useX + "," + useY);
-     b.setMap(this.getMap());
-   }
-   delete Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
-   delete this.getMap().attr._entitiesByLocation[useX+","+useY];
-   delete this.getMap().attr._locationsByEntity[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
- }}
 
 
-  if (this.getMap().getTile(useX , useY) != Game.Tile.decTile&&this.getMap().getTile(useX , useY) != Game.Tile.wallTile&&this.getMap().getTile(useX , useY) != Game.Tile.everTile){
-    if (this.hasMixin("Bomb1")){
-  this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}
-  else if (this.hasMixin("Bomb2")){
-    this.getMap()._tiles[useX][useY] = Game.Tile.waterTile;
-  }}
+  if ((this.getMap().getTile(useX,useY) != Game.Tile.decTile&&this.getMap().getTile(useX,useY) != Game.Tile.treeTile&&this.getMap().getTile(useX,useY) != Game.Tile.everTile)){
+    if (this.getMap().getTile(useX,useY) != Game.Tile.mountTile&&this.getMap().getTile(useX,useY) != Game.Tile.snowTile){
+      if (this.getMap().getTile(useX,useY) != Game.Tile.hotelTile&&this.getMap().getTile(useX,useY) != Game.Tile.postTile&&this.getMap().getTile(useX,useY) != Game.Tile.bankTile){
+        if (this.hasMixin("Bomb1")){
+          this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}
+        else if (this.hasMixin("Bomb2")){
+        this.getMap()._tiles[useX][useY] = Game.Tile.waterTile;}
+      }
+    }
+  }
 };

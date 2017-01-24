@@ -2,6 +2,7 @@ Game.UIMode = {};
 Game.UIMode.DEFAULT_COLOR_FG = '#fff';
 Game.UIMode.DEFAULT_COLOR_BG = '#000';
 Game.UIMode.DEFAULT_COLOR_STR = '%c{'+Game.UIMode.DEFAULT_COLOR_FG+'}%b{'+Game.UIMode.DEFAULT_COLOR_BG+'}';
+Game.UIMode.maps = '';
 
 //#############################################################################################################################
 //#############################################################################################################################
@@ -57,6 +58,56 @@ Game.UIMode.gameInitial = {
       Game.switchUiMode(Game.UIMode.gameMenu)
     }
     else if (inputData.keyCode == ROT.VK_SPACE) {
+      Game.switchUiMode(Game.UIMode.gameMap);
+      // this.newGame();
+    }
+  },
+  // newGame: function () {
+  //   this._resetGameDataStructures();
+  //   Game.setRandomSeed(5 + Math.floor(Game.TRANSIENT_RNG.getUniform()*100000));
+  //   Game.UIMode.gamePlay.setupNewGame();
+  //   Game.switchUiMode(Game.UIMode.gamePlay);
+  // },
+
+  localStorageAvailable: function () { // NOTE: see https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+  	try {
+  		var x = '__storage_test__';
+  		window.localStorage.setItem( x, x);
+  		window.localStorage.removeItem(x);
+  		return true;
+  	}
+  	catch(e) {
+      Game.Message.send('Sorry, no local data storage is available for this browser');
+  		return false;
+  	}
+  },
+};
+
+//#############################################################################################################################
+//#############################################################################################################################
+
+Game.UIMode.gameMap = {
+  enter: function () {
+    Game.Message.send("Select the map mode you wish to play")
+    Game.refresh();
+  },
+  exit: function () {
+    Game.refresh();
+  },
+  render: function (display) {
+    display.drawText(1,1,"[f1] = Forest");
+    display.drawText(1,3,"[f2] = Mountain");
+    display.drawText(1,5,"[f3] = City");
+  },
+  handleInput: function (inputType,inputData) {
+    if (inputData.keyCode == ROT.VK_F1) { // ignore the various modding keys - control, shift, etc.
+      Game.UIMode.maps = 'caves1';
+      this.newGame();
+    } else if (inputData.keyCode == ROT.VK_F2) { // ignore the various modding keys - control, shift, etc.
+      Game.UIMode.maps = 'caves2';
+      this.newGame();
+    } else if (inputData.keyCode == ROT.VK_F3) { // ignore the various modding keys - control, shift, etc.
+      Game.UIMode.maps = 'caves3';
       this.newGame();
     }
   },
@@ -72,20 +123,9 @@ Game.UIMode.gameInitial = {
     Game.DATASTORE.ENTITY = {};
     Game.DATASTORE.ITEM = {};
     Game.DATASTORE.BOMB= {};
-  },
-  localStorageAvailable: function () { // NOTE: see https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
-  	try {
-  		var x = '__storage_test__';
-  		window.localStorage.setItem( x, x);
-  		window.localStorage.removeItem(x);
-  		return true;
-  	}
-  	catch(e) {
-      Game.Message.send('Sorry, no local data storage is available for this browser');
-  		return false;
-  	}
-  },
+  }
 };
+
 
 //#############################################################################################################################
 //#############################################################################################################################
@@ -203,7 +243,7 @@ Game.UIMode.gamePlay = {
   },
   handleInput: function (inputType,inputData) {
     var pressedKey = String.fromCharCode(inputData.charCode);
-    Game.Message.send("you pressed the '"+String.fromCharCode(inputData.charCode)+"' key");
+    // Game.Message.send("you pressed the '"+String.fromCharCode(inputData.charCode)+"' key");
     Game.renderDisplayMessage();
     if (inputType == 'keypress') {
       if (inputData.key == 'Enter') {
@@ -219,12 +259,15 @@ Game.UIMode.gamePlay = {
         this.moveAvatar(0,-1);
       } else if (pressedKey == ',') {
         if (this.getAvatar2().getCurBomb()>=1){
-        var b = Game.BombGenerator.create('bomb2');
-        b.setMap(this.getMap());
-        this.getMap().addBomb(b,this.getAvatar2().getPos());
-        this.getAvatar2().detonate();
-      }
+          Game.Message.send("Player2 has dropped a bomb");
+          Game.renderDisplayMessage();
+          var b = Game.BombGenerator.create('bomb2');
+          b.setMap(this.getMap());
+          this.getMap().addBomb(b,this.getAvatar2().getPos());
+          this.getAvatar2().detonate();
+        }
       }else if (pressedKey == '.') {
+        Game.Message.send("Player2 has detonated");
         this.getMap().clearWater();
         this.getAvatar2().resetBombs();
         console.dir (this.getMap().attr._bombsByLocation);
@@ -238,12 +281,15 @@ Game.UIMode.gamePlay = {
         }
       } else if (pressedKey == '1') {
         if (this.getAvatar().getCurBomb()>=1){
-        var b = Game.BombGenerator.create('bomb');
-        b.setMap(this.getMap());
-        this.getMap().addBomb(b,this.getAvatar().getPos());
-        this.getAvatar().detonate();
-      }
+          Game.Message.send("Player1 has dropped a bomb");
+          Game.renderDisplayMessage();
+          var b = Game.BombGenerator.create('bomb');
+          b.setMap(this.getMap());
+          this.getMap().addBomb(b,this.getAvatar().getPos());
+          this.getAvatar().detonate();
+        }
       }else if (pressedKey == '2') {
+        Game.Message.send("Player1 has detonated");
         this.getMap().clearFire();
         this.getAvatar().resetBombs();
         console.dir (this.getMap().attr._bombsByLocation);
@@ -275,7 +321,9 @@ Game.UIMode.gamePlay = {
    }
   },
   setupNewGame: function () {
-    this.setMap(new Game.Map('caves1'));
+    console.log(Game.UIMode.maps);
+    var a = Game.UIMode.maps;
+    this.setMap(new Game.Map(a));
     this.setAvatar(Game.EntityGenerator.create('avatar1'));
     this.setAvatar2(Game.EntityGenerator.create('avatar2'));
 

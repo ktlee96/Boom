@@ -22,9 +22,19 @@ Game.Tile.prototype.isDiggable = function () {
 
 Game.Tile.nullTile = new Game.Tile({name:'nullTile'});
 Game.Tile.floorTile = new Game.Tile({name:'floor',chr:' ',walkable:true});
-Game.Tile.wallTile = new Game.Tile({name:'wall',chr:'🌴'});
 Game.Tile.fireTile = new Game.Tile({name:'fire',chr:'🔥',walkable:true});
 Game.Tile.waterTile = new Game.Tile({name:'water',chr:'💧',walkable:true});
+Game.Tile.teleportTile = new Game.Tile({name:'tele',chr:'🚪',walkable:true});
+
+Game.Tile.wallTile = new Game.Tile({name:'wall',chr:'💜'});
+
 Game.Tile.decTile = new Game.Tile({name:'dec',chr:'🌳'});
 Game.Tile.everTile = new Game.Tile({name:'ever',chr:'🌲'});
-Game.Tile.teleportTile = new Game.Tile({name:'tele',chr:'🚪',walkable:true});
+Game.Tile.treeTile = new Game.Tile({name:'tree',chr:'🌴'});
+
+Game.Tile.mountTile = new Game.Tile({name:'mount',chr:'⛰️'});
+Game.Tile.snowTile = new Game.Tile({name:'snow',chr:'🏔️'});
+
+Game.Tile.hotelTile = new Game.Tile({name:'hotel',chr:'🏨'});
+Game.Tile.bankTile = new Game.Tile({name:'bank',chr:'🏦️'});
+Game.Tile.postTile = new Game.Tile({name:'post',chr:'🏤'});

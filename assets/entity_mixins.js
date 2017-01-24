@@ -54,8 +54,17 @@ Game.EntityMixin.WalkerCorporeal = {
       // NOTE: attack / interact handling (or event raising) would go here
       return false;
     }
-    if ((map.getTile(targetX,targetY)==Game.Tile.fireTile&&this.getName() == "avatar2")||(map.getTile(targetX,targetY)==Game.Tile.waterTile&&this.getName() == "avatar1")) {
+    if (map.getTile(targetX,targetY)==Game.Tile.fireTile&&this.getName() == "avatar2"){
       if (this.hasMixin('HitPoints')) {
+        Game.Message.send("Player2 has taken damage from the fire");
+        Game.renderDisplayMessage();
+        this.takeHits(2);
+      }
+    }
+    if (map.getTile(targetX,targetY)==Game.Tile.waterTile&&this.getName() == "avatar1"){
+      if (this.hasMixin('HitPoints')) {
+        Game.Message.send("Player2 has taken damage from the water");
+        Game.renderDisplayMessage();
         this.takeHits(2);
       }
     }
