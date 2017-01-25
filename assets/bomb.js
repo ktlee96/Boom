@@ -32,6 +32,13 @@ Game.Bomb.prototype.explode = function () {
     this.destroy(0,a);
     this.destroy(-a,0);
     this.destroy(0,-a);}
+    if (Game.UIMode.gamePlay.getAvatar().isSpecial()) {
+      for (var a = 1; a <= Game.UIMode.gamePlay.getAvatar().getBombRange();a ++ ){
+      this.destroy(a,a);
+      this.destroy(-a,a);
+      this.destroy(-a,-a);
+      this.destroy(a,-a);}
+    }
 
   }
   else if (this.hasMixin("Bomb2")){
@@ -40,7 +47,15 @@ Game.Bomb.prototype.explode = function () {
     this.destroy(0,a);
     this.destroy(-a,0);
     this.destroy(0,-a);
-}
+  }
+  if (Game.UIMode.gamePlay.getAvatar2().isSpecial()) {
+    console.log("special")
+    for (var a = 1; a <= Game.UIMode.gamePlay.getAvatar2().getBombRange();a ++ ){
+      this.destroy(a,a);
+      this.destroy(-a,a);
+      this.destroy(-a,-a);
+      this.destroy(a,-a);}
+    }
   }
 
   this.destroy(0,0);
@@ -87,6 +102,11 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
        }
        else if(a < 0.4) {
          var b = Game.ItemGenerator.create('extra');
+         this.getMap().addItem(b,useX + "," + useY);
+         b.setMap(this.getMap());
+       }
+       else if(a < 0.9) {
+         var b = Game.ItemGenerator.create('special');
          this.getMap().addItem(b,useX + "," + useY);
          b.setMap(this.getMap());
        }

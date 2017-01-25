@@ -18,3 +18,8 @@ Game.ItemGenerator.learn({
   fg:'#aaa',
   mixins: ["Num"]
 });
+Game.ItemGenerator.learn({
+  name: 'special',
+  chr:'🔫',
+  fg:'#aaa'
+});

@@ -8,7 +8,9 @@ Game.EntityMixin.Bomberman = {
     stateModel: {
       bombRange: 1,
       bombNum: 2,
-      curBombNum: 2
+      curBombNum: 2,
+      specialBomb: 0,
+
   }
 
   },
@@ -27,9 +29,18 @@ Game.EntityMixin.Bomberman = {
     this.attr._Bomberman_attr.bombNum++;
     this.attr._Bomberman_attr.curBombNum++;
   },
-
+  isSpecial: function() {
+    return this.attr._Bomberman_attr.specialBomb>0;
+  },
+  setSpecial: function() {
+    this.attr._Bomberman_attr.specialBomb= 10;
+  },
   detonate:function (){
-    this.attr._Bomberman_attr.curBombNum--;
+    if (this.isSpecial()){
+      this.attr._Bomberman_attr.specialBomb --;
+    }
+    else{
+    this.attr._Bomberman_attr.curBombNum--;}
   },
 
   resetBombs: function() {
@@ -87,7 +98,11 @@ Game.EntityMixin.WalkerCorporeal = {
           this.addBombNum();
         }
       }
-
+      if (mapTargetItems.getName()=="special") {
+        delete Game.DATASTORE.ITEM[map.attr._itemsByLocation[targetX + ","+ targetY]];
+        delete map.attr._itemsByLocation[targetX+","+targetY];
+        this.setSpecial();
+      }
       if (mapTargetItems.hasMixin("Health")){
         if (this.hasMixin('HitPoints')) {
           delete Game.DATASTORE.ITEM[map.attr._itemsByLocation[targetX + ","+ targetY]];
