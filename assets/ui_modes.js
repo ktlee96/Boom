@@ -8,6 +8,9 @@ Game.UIMode.maps = '';
 //#############################################################################################################################
 
 Game.UIMode.gameStart = {
+  attr:
+   {
+     _snd: new Audio("boom.mp3")},
   enter: function () {
     Game.Message.clear();
     Game.Message.send("press [shift] to continue");
@@ -33,6 +36,7 @@ Game.UIMode.gameStart = {
   },
   handleInput: function (inputType,inputData) {
     if (inputData.keyCode == ROT.VK_SHIFT) { // ignore the various modding keys - control, shift, etc.
+      this.attr._snd.play();
       Game.switchUiMode(Game.UIMode.gameInitial);
     }
   }
@@ -42,6 +46,9 @@ Game.UIMode.gameStart = {
 //#############################################################################################################################
 
 Game.UIMode.gameInitial = {
+  attr:
+   {
+     _snd: new Audio("boom.mp3")},
   RANDOM_SEED_KEY: 'gameRandomSeed',
   enter: function () {
     Game.Message.clear();
@@ -57,8 +64,10 @@ Game.UIMode.gameInitial = {
   handleInput: function (inputType,inputData) {
     if (inputData.keyCode == ROT.VK_CONTROL) {
       Game.switchUiMode(Game.UIMode.gameMenu)
+      this.attr._snd.play();
     }
     else if (inputData.keyCode == ROT.VK_SPACE) {
+      this.attr._snd.play();
       Game.switchUiMode(Game.UIMode.gameMap);
       // this.newGame();
     }
@@ -88,6 +97,9 @@ Game.UIMode.gameInitial = {
 //#############################################################################################################################
 
 Game.UIMode.gameMap = {
+  attr:
+   {
+     _snd: new Audio("boom.mp3")},
   enter: function () {
     Game.Message.send("Select the map mode you wish to play")
     Game.refresh();
@@ -103,12 +115,15 @@ Game.UIMode.gameMap = {
   handleInput: function (inputType,inputData) {
     if (inputData.keyCode == ROT.VK_1) { // ignore the various modding keys - control, shift, etc.
       Game.UIMode.maps = 'caves1';
+      this.attr._snd.play();
       this.newGame();
     } else if (inputData.keyCode == ROT.VK_2) { // ignore the various modding keys - control, shift, etc.
       Game.UIMode.maps = 'caves2';
+      this.attr._snd.play();
       this.newGame();
     } else if (inputData.keyCode == ROT.VK_3) { // ignore the various modding keys - control, shift, etc.
       Game.UIMode.maps = 'caves3';
+      this.attr._snd.play();
       this.newGame();
     }
   },
@@ -132,6 +147,9 @@ Game.UIMode.gameMap = {
 //#############################################################################################################################
 
 Game.UIMode.gameMenu = {
+  attr:
+   {
+     _snd: new Audio("boom.mp3")},
   enter: function () {
     Game.Message.clear();
     Game.refresh();
@@ -163,7 +181,9 @@ Game.UIMode.gameMenu = {
 
   },
   handleInput: function (inputType,inputData) {
-    if (inputData.charCode !== 0) { // ignore the various modding keys - control, shift, etc.
+    if (inputData.charCode !== 0) {
+      // ignore the various modding keys - control, shift, etc.
+      this.attr._snd.play();
       Game.switchUiMode(Game.UIMode.gameInitial);
     }
   }
@@ -179,7 +199,8 @@ Game.UIMode.gamePlay = {
     _cameraY: 100,
     _avatarId: '',
     _avatar2Id: '',
-    _snd: new Audio("boom.mp3")
+    _snd: new Audio("boom.mp3"),
+    _snd2: new Audio("splash.wav")
   },
   JSON_KEY: 'uiMode_gamePlay',
   enter: function () {
@@ -281,6 +302,7 @@ Game.UIMode.gamePlay = {
           console.dir (b);
           if (b.hasMixin("Bomb2")){
             b.explode();
+            this.attr._snd2.play();
           }
         }
       } else if (pressedKey == ' ') {
