@@ -32,9 +32,9 @@ Game.Tile.decTile = new Game.Tile({name:'dec',chr:'🌳'});
 Game.Tile.everTile = new Game.Tile({name:'ever',chr:'🌲'});
 Game.Tile.treeTile = new Game.Tile({name:'tree',chr:'🌴'});
 
-Game.Tile.mountTile = new Game.Tile({name:'mount',chr:'⛰️'});
-Game.Tile.snowTile = new Game.Tile({name:'snow',chr:'🏔️'});
+Game.Tile.mountTile = new Game.Tile({name:'mount',chr:'☃️'});
+Game.Tile.snowTile = new Game.Tile({name:'snow',chr:'❄️️️'});
 
 Game.Tile.hotelTile = new Game.Tile({name:'hotel',chr:'🏨'});
-Game.Tile.bankTile = new Game.Tile({name:'bank',chr:'🏦️'});
-Game.Tile.postTile = new Game.Tile({name:'post',chr:'🏤'});
+Game.Tile.bankTile = new Game.Tile({name:'bank',chr:'🕍'});
+Game.Tile.postTile = new Game.Tile({name:'post',chr:'🏛️'});
