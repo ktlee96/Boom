@@ -179,6 +179,7 @@ Game.UIMode.gamePlay = {
     _cameraY: 100,
     _avatarId: '',
     _avatar2Id: '',
+    _snd: new Audio("boom.mp3")
   },
   JSON_KEY: 'uiMode_gamePlay',
   enter: function () {
@@ -302,6 +303,7 @@ Game.UIMode.gamePlay = {
           console.dir (b);
           if (b.hasMixin("Bomb1")){
             b.explode();
+            this.attr._snd.play();
           }
         }
       }
