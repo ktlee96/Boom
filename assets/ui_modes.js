@@ -143,21 +143,23 @@ Game.UIMode.gameMenu = {
   render: function (display) {
     display.drawText(1,1,"Avatar1 Controls");
     display.drawText(2,3,"Moving Keys:")
-    display.drawText(5,5,"a");
-    display.drawText(7,5,"d");
-    display.drawText(6,4,"w");
-    display.drawText(6,5,"s");
+    display.drawText(5,6,"a");
+    display.drawText(7,6,"d");
+    display.drawText(6,5,"w");
+    display.drawText(6,6,"s");
 
-    display.drawText(1,7,"Drop Bomb: 1");
+    display.drawText(1,7,"%c{#000}.%c{}   Drop Bomb: 1");
     display.drawText(1,8,"Detonate Bomb: 2");
 
-    display.drawText(25,1,"Avatar2 Controls");
-    display.drawText(25,2,"Left: ArrowLeft");
-    display.drawText(25,3,"Right: ArrowRight");
-    display.drawText(25,4,"Up: ArrowUp");
-    display.drawText(25,5,"Down: ArrowDown");
-    display.drawText(25,6,"Drop Bomb: ,");
-    display.drawText(25,7,"Detonate Bomb: .");
+    display.drawText(21,1,"Avatar2 Controls");
+    display.drawText(22,3,"Moving Keys:")
+    display.drawText(25,6,"⬅️️️");
+    display.drawText(27,6,"➡️️");
+    display.drawText(26,5,"⬆️️");
+    display.drawText(26,6,"⬇️️");
+
+    display.drawText(25,7,"%c{#000}.%c{}   Drop Bomb: [");
+    display.drawText(25,8,"Detonate Bomb: ]");
 
   },
   handleInput: function (inputType,inputData) {
