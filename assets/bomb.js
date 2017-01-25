@@ -105,7 +105,7 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
          this.getMap().addItem(b,useX + "," + useY);
          b.setMap(this.getMap());
        }
-       else if(a < 0.9) {
+       else if(a < 0.5) {
          var b = Game.ItemGenerator.create('special');
          this.getMap().addItem(b,useX + "," + useY);
          b.setMap(this.getMap());
@@ -120,10 +120,12 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
   if ((this.getMap().getTile(useX,useY) != Game.Tile.decTile&&this.getMap().getTile(useX,useY) != Game.Tile.treeTile&&this.getMap().getTile(useX,useY) != Game.Tile.everTile)){
     if (this.getMap().getTile(useX,useY) != Game.Tile.mountTile&&this.getMap().getTile(useX,useY) != Game.Tile.snowTile){
       if (this.getMap().getTile(useX,useY) != Game.Tile.hotelTile&&this.getMap().getTile(useX,useY) != Game.Tile.postTile&&this.getMap().getTile(useX,useY) != Game.Tile.bankTile){
-        if (this.hasMixin("Bomb1")){
-          this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}
-        else if (this.hasMixin("Bomb2")){
-        this.getMap()._tiles[useX][useY] = Game.Tile.waterTile;}
+        if (this.getMap().getTile(useX,useY) != Game.Tile.teleportTile){
+          if (this.hasMixin("Bomb1")){
+            this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}
+          else if (this.hasMixin("Bomb2")){
+          this.getMap()._tiles[useX][useY] = Game.Tile.waterTile;}
+        }
       }
     }
   }

@@ -9,6 +9,7 @@ Game.UIMode.maps = '';
 
 Game.UIMode.gameStart = {
   enter: function () {
+    Game.Message.clear();
     Game.Message.send("press [shift] to continue");
     Game.refresh();
   },
@@ -95,18 +96,18 @@ Game.UIMode.gameMap = {
     Game.refresh();
   },
   render: function (display) {
-    display.drawText(1,1,"[f1] = Forest");
-    display.drawText(1,3,"[f2] = Mountain");
-    display.drawText(1,5,"[f3] = City");
+    display.drawText(1,1,"[1] = Forest");
+    display.drawText(1,3,"[2] = Mountain");
+    display.drawText(1,5,"[3] = City");
   },
   handleInput: function (inputType,inputData) {
-    if (inputData.keyCode == ROT.VK_F1) { // ignore the various modding keys - control, shift, etc.
+    if (inputData.keyCode == ROT.VK_1) { // ignore the various modding keys - control, shift, etc.
       Game.UIMode.maps = 'caves1';
       this.newGame();
-    } else if (inputData.keyCode == ROT.VK_F2) { // ignore the various modding keys - control, shift, etc.
+    } else if (inputData.keyCode == ROT.VK_2) { // ignore the various modding keys - control, shift, etc.
       Game.UIMode.maps = 'caves2';
       this.newGame();
-    } else if (inputData.keyCode == ROT.VK_F3) { // ignore the various modding keys - control, shift, etc.
+    } else if (inputData.keyCode == ROT.VK_3) { // ignore the various modding keys - control, shift, etc.
       Game.UIMode.maps = 'caves3';
       this.newGame();
     }
@@ -257,7 +258,7 @@ Game.UIMode.gamePlay = {
         this.moveAvatar(1,0);
       } else if (pressedKey == 'w') {
         this.moveAvatar(0,-1);
-      } else if (pressedKey == ',') {
+      } else if (pressedKey == '[') {
         if (this.getAvatar2().getCurBomb()>=1){
           Game.Message.send("Player2 has dropped a bomb");
           Game.renderDisplayMessage();
@@ -266,7 +267,7 @@ Game.UIMode.gamePlay = {
           this.getMap().addBomb(b,this.getAvatar2().getPos());
           this.getAvatar2().detonate();
         }
-      }else if (pressedKey == '.') {
+      }else if (pressedKey == ']') {
         Game.Message.send("Player2 has detonated");
         this.getMap().clearWater();
         this.getAvatar2().resetBombs();
@@ -279,7 +280,7 @@ Game.UIMode.gamePlay = {
             b.explode();
           }
         }
-      } else if (pressedKey == '1') {
+      } else if (pressedKey == ' ') {
         if (this.getAvatar().getCurBomb()>=1){
           Game.Message.send("Player1 has dropped a bomb");
           Game.renderDisplayMessage();
@@ -288,7 +289,7 @@ Game.UIMode.gamePlay = {
           this.getMap().addBomb(b,this.getAvatar().getPos());
           this.getAvatar().detonate();
         }
-      }else if (pressedKey == '2') {
+      }else if (pressedKey == 'b') {
         Game.Message.send("Player1 has detonated");
         this.getMap().clearFire();
         this.getAvatar().resetBombs();
