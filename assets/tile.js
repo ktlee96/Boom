@@ -28,6 +28,12 @@ Game.Tile.teleportTile = new Game.Tile({name:'tele',chr:'🚪',walkable:true});
 
 Game.Tile.wallTile = new Game.Tile({name:'wall',chr:'💜'});
 
+Game.Tile.bangTile = new Game.Tile({name:'bang',chr:'💥'});
+
+Game.Tile.pinTile = new Game.Tile({name:'pin',chr:'❕'});
+
+Game.Tile.timeTile = new Game.Tile({name:'time',chr:'⏰'});
+
 Game.Tile.decTile = new Game.Tile({name:'dec',chr:'🌳'});
 Game.Tile.everTile = new Game.Tile({name:'ever',chr:'🌲'});
 Game.Tile.treeTile = new Game.Tile({name:'tree',chr:'🌴'});

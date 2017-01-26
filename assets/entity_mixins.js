@@ -79,6 +79,12 @@ Game.EntityMixin.WalkerCorporeal = {
         this.takeHits(2);
       }
     }
+    if (map.getTile(targetX,targetY)==Game.Tile.timeTile&&this.getName() == "avatar1"){
+      Game.switchUiMode(Game.UIMode.gameWin1);
+    }
+    if (map.getTile(targetX,targetY)==Game.Tile.timeTile&&this.getName() == "avatar2"){
+      Game.switchUiMode(Game.UIMode.gameWin2);
+    }
 
     var mapTargetItems = map.getItems(targetX,targetY);
     if (mapTargetItems) {
@@ -114,7 +120,13 @@ Game.EntityMixin.WalkerCorporeal = {
 
     if (map.getTile(targetX,targetY).isWalkable()) {
       if (map.getTile(targetX,targetY) == Game.Tile.teleportTile) {
-        var a = Game.util.randomInt(0,3);
+        var b = 0;
+        if (Game.UIMode.maps == 'caves4'){
+          this.b = 9;
+        } else {
+          this.b = 3;
+        }
+        var a = Game.util.randomInt(0,this.b);
         var pos = map.attr._teleportPos[a];
         this.setPos(pos);
       }

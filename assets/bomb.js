@@ -121,10 +121,14 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
     if (this.getMap().getTile(useX,useY) != Game.Tile.mountTile&&this.getMap().getTile(useX,useY) != Game.Tile.snowTile){
       if (this.getMap().getTile(useX,useY) != Game.Tile.hotelTile&&this.getMap().getTile(useX,useY) != Game.Tile.postTile&&this.getMap().getTile(useX,useY) != Game.Tile.bankTile){
         if (this.getMap().getTile(useX,useY) != Game.Tile.teleportTile){
-          if (this.hasMixin("Bomb1")){
-            this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}
-          else if (this.hasMixin("Bomb2")){
-          this.getMap()._tiles[useX][useY] = Game.Tile.waterTile;}
+          if (this.getMap().getTile(useX,useY) != Game.Tile.bangTile){
+            if (this.getMap().getTile(useX,useY) != Game.Tile.pinTile){
+              if (this.hasMixin("Bomb1")){
+                this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}
+              else if (this.hasMixin("Bomb2")){
+              this.getMap()._tiles[useX][useY] = Game.Tile.waterTile;}
+            }
+          }
         }
       }
     }

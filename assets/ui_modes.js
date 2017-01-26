@@ -109,8 +109,10 @@ Game.UIMode.gameMap = {
   },
   render: function (display) {
     display.drawText(1,1,"[1] = Forest");
-    display.drawText(1,3,"[2] = Mountain");
+    display.drawText(1,3,"[2] = Snowy");
     display.drawText(1,5,"[3] = City");
+    display.drawText(1,7,"[4] = Arena");
+    display.drawText(1,9,"[5] = Maze");
   },
   handleInput: function (inputType,inputData) {
     if (inputData.keyCode == ROT.VK_1) { // ignore the various modding keys - control, shift, etc.
@@ -123,6 +125,14 @@ Game.UIMode.gameMap = {
       this.newGame();
     } else if (inputData.keyCode == ROT.VK_3) { // ignore the various modding keys - control, shift, etc.
       Game.UIMode.maps = 'caves3';
+      this.attr._snd.play();
+      this.newGame();
+    } else if (inputData.keyCode == ROT.VK_4) { // ignore the various modding keys - control, shift, etc.
+      Game.UIMode.maps = 'caves4';
+      this.attr._snd.play();
+      this.newGame();
+    } else if (inputData.keyCode == ROT.VK_5) { // ignore the various modding keys - control, shift, etc.
+      Game.UIMode.maps = 'caves5';
       this.attr._snd.play();
       this.newGame();
     }
@@ -161,23 +171,23 @@ Game.UIMode.gameMenu = {
   render: function (display) {
     display.drawText(1,1,"Avatar1 Controls");
     display.drawText(2,3,"Moving Keys:")
-    display.drawText(5,6,"a");
-    display.drawText(7,6,"d");
-    display.drawText(6,5,"w");
-    display.drawText(6,6,"s");
+    display.drawText(8,6,"a");
+    display.drawText(10,6,"d");
+    display.drawText(9,5,"w");
+    display.drawText(9,6,"s");
 
-    display.drawText(1,7,"%c{#000}.%c{}   Drop Bomb: 1");
-    display.drawText(1,8,"Detonate Bomb: 2");
+    display.drawText(1,8,"%c{#000}.%c{}   Drop Bomb: 1");
+    display.drawText(1,9,"Detonate Bomb: 2");
 
-    display.drawText(21,1,"Avatar2 Controls");
-    display.drawText(22,3,"Moving Keys:")
-    display.drawText(25,6,"⬅️️️");
-    display.drawText(27,6,"➡️️");
-    display.drawText(26,5,"⬆️️");
-    display.drawText(26,6,"⬇️️");
+    display.drawText(26,1,"Avatar2 Controls");
+    display.drawText(27,3,"Moving Keys:")
+    display.drawText(33,6,"⬅️️️");
+    display.drawText(35,6,"➡️️");
+    display.drawText(34,5,"⬆️️");
+    display.drawText(34,6,"⬇️️");
 
-    display.drawText(25,7,"%c{#000}.%c{}   Drop Bomb: [");
-    display.drawText(25,8,"Detonate Bomb: ]");
+    display.drawText(25,8,"%c{#000}.%c{}   Drop Bomb: [");
+    display.drawText(25,9,"Detonate Bomb: ]");
 
   },
   handleInput: function (inputType,inputData) {
@@ -358,13 +368,28 @@ Game.UIMode.gamePlay = {
     this.getMap().addEntity(this.getAvatar2(),this.getMap().getRandomWalkableLocation());
     this.getMap().updateEntityLocation(this.getAvatar());
     this.getMap().updateEntityLocation(this.getAvatar2());
-    // dev code - just add some entities to the map
-    for (var ecount = 0; ecount < 40; ecount++) {
+
+    var num = 0;
+    var doors = 0;
+
+    if (Game.UIMode.maps == 'caves4'){
+      this.num = 80;
+      this.doors = 10;
+    } else if (Game.UIMode.maps == 'caves5') {
+      this.num = 0;
+      this.doors = 0;
+      var pos = this.getMap().getRandomWalkableLocation();
+      this.getMap().setTile(Game.Tile.timeTile,pos);
+    } else {
+      this.num = 40;
+      this.doors = 4;
+    }
+    for (var ecount = 0; ecount < this.num; ecount++) {
       var a = Game.EntityGenerator.create('moss');
       this.getMap().addEntity(a,this.getMap().getRandomWalkableLocation());
       this.getMap().updateEntityLocation(a);
     }
-    for (var ecount = 0; ecount < 4; ecount++) {
+    for (var ecount = 0; ecount < this.doors; ecount++) {
       var pos = this.getMap().getRandomWalkableLocation();
       this.getMap().setTile(Game.Tile.teleportTile,pos);
       this.getMap().attr._teleportPos[ecount] = pos;
