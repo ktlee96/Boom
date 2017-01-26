@@ -202,8 +202,8 @@ Game.UIMode.gameMenu = {
     display.drawText(9,5,"w");
     display.drawText(9,6,"s");
 
-    display.drawText(1,8,"%c{#000}.%c{}   Drop Bomb: 1");
-    display.drawText(1,9,"Detonate Bomb: 2");
+    display.drawText(1,8,"%c{#000}.%c{}   Drop Bomb: [space]");
+    display.drawText(1,9,"Detonate Bomb: b");
 
     display.drawText(26,1,"Avatar2 Controls");
     display.drawText(27,3,"Moving Keys:")
@@ -341,7 +341,7 @@ Game.UIMode.gamePlay = {
             this.attr._snd2.play();
           }
         }
-      } else if (pressedKey == '1') {
+      } else if (pressedKey == ' ') {
         if (this.getAvatar().getCurBomb()>=1){
           Game.Message.send("Player1 has dropped a bomb");
           Game.renderDisplayMessage();
@@ -350,7 +350,7 @@ Game.UIMode.gamePlay = {
           this.getMap().addBomb(b,this.getAvatar().getPos());
           this.getAvatar().detonate();
         }
-      }else if (pressedKey == '2') {
+      }else if (pressedKey == 'b') {
         Game.Message.send("Player1 has detonated");
         this.getMap().clearFire();
         this.getAvatar().resetBombs();
