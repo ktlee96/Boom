@@ -341,7 +341,7 @@ Game.UIMode.gamePlay = {
             this.attr._snd2.play();
           }
         }
-      } else if (pressedKey == ' ') {
+      } else if (pressedKey == '1') {
         if (this.getAvatar().getCurBomb()>=1){
           Game.Message.send("Player1 has dropped a bomb");
           Game.renderDisplayMessage();
@@ -350,7 +350,7 @@ Game.UIMode.gamePlay = {
           this.getMap().addBomb(b,this.getAvatar().getPos());
           this.getAvatar().detonate();
         }
-      }else if (pressedKey == 'b') {
+      }else if (pressedKey == '2') {
         Game.Message.send("Player1 has detonated");
         this.getMap().clearFire();
         this.getAvatar().resetBombs();
