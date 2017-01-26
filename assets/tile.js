@@ -30,7 +30,7 @@ Game.Tile.wallTile = new Game.Tile({name:'wall',chr:'💜'});
 
 Game.Tile.bangTile = new Game.Tile({name:'bang',chr:'💥'});
 
-Game.Tile.pinTile = new Game.Tile({name:'pin',chr:'❕'});
+Game.Tile.pinTile = new Game.Tile({name:'pin',chr:'🌳'});
 
 Game.Tile.timeTile = new Game.Tile({name:'time',chr:'⏰'});
 

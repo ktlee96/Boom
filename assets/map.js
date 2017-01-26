@@ -168,6 +168,9 @@ Game.Map.prototype.extractEntityAt = function (x_or_pos,y) {
 Game.Map.prototype.getRandomWalkableLocation = function() {
   return this.getRandomLocation(function(t){ return t.isWalkable(); });
 };
+Game.Map.prototype.getRandomNonWalkableLocation = function() {
+  return this.getRandomLocation(function(t){ return !t.isWalkable(); });
+};
 
 
 Game.Map.prototype.renderOn = function (display,camX,camY) {
@@ -186,10 +189,7 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
         tile = Game.Tile.wallTile;
       }
       tile.draw(display,x,y);
-      var ent = this.getEntity(mapPos);
-      if (ent) {
-        ent.draw(display,x,y);
-      }
+
       var bomb = this.getBombs(mapPos);
       if (bomb) {
         bomb.draw(display,x,y);
@@ -197,6 +197,10 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
       var item = this.getItems(mapPos);
       if (item) {
         item.draw(display,x,y);
+      }
+      var ent = this.getEntity(mapPos);
+      if (ent) {
+        ent.draw(display,x,y);
       }
     }
   }

@@ -58,8 +58,9 @@ Game.UIMode.gameInitial = {
     Game.refresh();
   },
   render: function (display) {
-    display.drawText(1,3,"press [ctrl] to view game controls");
-    display.drawText(1,4,"press [space] to start a new game");
+    display.drawText(20,13,"press [ctrl] to view game controls");
+    display.drawText(20,11,"press [space] to start a new game");
+    display.drawText(20,9,"press [option] to read storyline");
   },
   handleInput: function (inputType,inputData) {
     if (inputData.keyCode == ROT.VK_CONTROL) {
@@ -69,15 +70,12 @@ Game.UIMode.gameInitial = {
     else if (inputData.keyCode == ROT.VK_SPACE) {
       this.attr._snd.play();
       Game.switchUiMode(Game.UIMode.gameMap);
-      // this.newGame();
+    }
+    else if (inputData.keyCode == ROT.VK_ALT) {
+      this.attr._snd.play();
+      Game.switchUiMode(Game.UIMode.gameStory);
     }
   },
-  // newGame: function () {
-  //   this._resetGameDataStructures();
-  //   Game.setRandomSeed(5 + Math.floor(Game.TRANSIENT_RNG.getUniform()*100000));
-  //   Game.UIMode.gamePlay.setupNewGame();
-  //   Game.switchUiMode(Game.UIMode.gamePlay);
-  // },
 
   localStorageAvailable: function () { // NOTE: see https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
   	try {
@@ -91,6 +89,34 @@ Game.UIMode.gameInitial = {
   		return false;
   	}
   },
+};
+
+//#############################################################################################################################
+//#############################################################################################################################
+
+Game.UIMode.gameStory = {
+  attr:
+   {
+     _snd: new Audio("boom.mp3")
+   },
+  enter: function () {
+    Game.Message.clear();
+    Game.refresh();
+    Game.Message.send("press any key to go back");
+  },
+  exit: function () {
+    Game.refresh();
+  },
+  render: function (display) {
+    display.drawText(1,5,"Two heroes from the future are stuck in 2017. They miss their families desperately and are trying their best to go back. However, there is only one time machine in the world, and they will have to fight each other to earn the right to use it... ");
+  },
+  handleInput: function (inputType,inputData) {
+    if (inputData.charCode !== 0) {
+      // ignore the various modding keys - control, shift, etc.
+      this.attr._snd.play();
+      Game.switchUiMode(Game.UIMode.gameInitial);
+    }
+  }
 };
 
 //#############################################################################################################################
@@ -112,7 +138,7 @@ Game.UIMode.gameMap = {
     display.drawText(1,3,"[2] = Snowy");
     display.drawText(1,5,"[3] = City");
     display.drawText(1,7,"[4] = Arena");
-    display.drawText(1,9,"[5] = Maze");
+    display.drawText(1,9,"[5] = Rush");
   },
   handleInput: function (inputType,inputData) {
     if (inputData.keyCode == ROT.VK_1) { // ignore the various modding keys - control, shift, etc.
@@ -371,21 +397,35 @@ Game.UIMode.gamePlay = {
 
     var num = 0;
     var doors = 0;
+    var item = '';
 
-    if (Game.UIMode.maps == 'caves4'){
+    if (Game.UIMode.maps == 'caves1'){
+      this.num = 40;
+      this.doors = 4;
+      this.item = 'mushroom';
+    } else if (Game.UIMode.maps == 'caves2'){
+      this.num = 40;
+      this.doors = 4;
+      this.item = 'present';
+    } else if (Game.UIMode.maps == 'caves3'){
+      this.num = 40;
+      this.doors = 4;
+      this.item = 'box';
+    } else if (Game.UIMode.maps == 'caves4'){
       this.num = 80;
       this.doors = 10;
+      this.item = 'rock';
     } else if (Game.UIMode.maps == 'caves5') {
       this.num = 0;
       this.doors = 0;
-      var pos = this.getMap().getRandomWalkableLocation();
-      this.getMap().setTile(Game.Tile.timeTile,pos);
+    //  this.getMap().setTile(Game.Tile.timeTile,70,10);
+
     } else {
       this.num = 40;
       this.doors = 4;
     }
     for (var ecount = 0; ecount < this.num; ecount++) {
-      var a = Game.EntityGenerator.create('moss');
+      var a = Game.EntityGenerator.create(this.item);
       this.getMap().addEntity(a,this.getMap().getRandomWalkableLocation());
       this.getMap().updateEntityLocation(a);
     }

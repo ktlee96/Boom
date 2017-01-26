@@ -76,7 +76,7 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
   var posY = posArr[1];
   var useX = (posX*1) + dx;
   var useY = (posY*1) + dy;
-  if (this.getMap().attr._entitiesByLocation[useX + ","+ useY]) {
+  if (this.getMap().attr._entitiesByLocation[useX + ","+ useY] ) {
     console.log ("entities at: " +useX + "," + useY);
     var a = Game.DATASTORE.ENTITY[this.getMap().attr._entitiesByLocation[useX + "," + useY]];
     if(a.getName()=="avatar1"){
@@ -105,7 +105,7 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
          this.getMap().addItem(b,useX + "," + useY);
          b.setMap(this.getMap());
        }
-       else if(a < 0.5) {
+       else if(a < 0.43) {
          var b = Game.ItemGenerator.create('special');
          this.getMap().addItem(b,useX + "," + useY);
          b.setMap(this.getMap());
@@ -115,14 +115,38 @@ Game.Bomb.prototype.destroy = function (dx, dy) {
        delete this.getMap().attr._locationsByEntity[this.getMap().attr._entitiesByLocation[useX + ","+ useY]];
      }
    }
-
+   //console.log(useX+ " , "+ useY);
+   if(this.getMap().getTile(useX,useY)== Game.Tile.pinTile){
+     console.log ("swag");
+     var a = ROT.RNG.getUniform();
+       if (a < 0.1 ){
+         var b = Game.ItemGenerator.create('health');
+         this.getMap().addItem(b,useX + "," + useY);
+         b.setMap(this.getMap());
+       }
+       else if(a < 0.18) {
+         var b = Game.ItemGenerator.create('damage');
+         this.getMap().addItem(b,useX + "," + useY);
+         b.setMap(this.getMap());
+       }
+       else if(a < 0.26) {
+         var b = Game.ItemGenerator.create('extra');
+         this.getMap().addItem(b,useX + "," + useY);
+         b.setMap(this.getMap());
+       }
+       else if(a < 0.28) {
+         var b = Game.ItemGenerator.create('special');
+         this.getMap().addItem(b,useX + "," + useY);
+         b.setMap(this.getMap());
+       }
+   }
 
   if ((this.getMap().getTile(useX,useY) != Game.Tile.decTile&&this.getMap().getTile(useX,useY) != Game.Tile.treeTile&&this.getMap().getTile(useX,useY) != Game.Tile.everTile)){
     if (this.getMap().getTile(useX,useY) != Game.Tile.mountTile&&this.getMap().getTile(useX,useY) != Game.Tile.snowTile){
       if (this.getMap().getTile(useX,useY) != Game.Tile.hotelTile&&this.getMap().getTile(useX,useY) != Game.Tile.postTile&&this.getMap().getTile(useX,useY) != Game.Tile.bankTile){
         if (this.getMap().getTile(useX,useY) != Game.Tile.teleportTile){
           if (this.getMap().getTile(useX,useY) != Game.Tile.bangTile){
-            if (this.getMap().getTile(useX,useY) != Game.Tile.pinTile){
+            if (this.getMap().getTile(useX,useY) != Game.Tile.timeTile){
               if (this.hasMixin("Bomb1")){
                 this.getMap()._tiles[useX][useY] = Game.Tile.fireTile;}
               else if (this.hasMixin("Bomb2")){

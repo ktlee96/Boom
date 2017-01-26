@@ -133,13 +133,27 @@ Game.MapTileSets = {
     _teleport:4,
     getMapTiles: function () {
       var mapTiles = Game.util.init2DArray(this._width,this._height,Game.Tile.nullTile);
-      var generator = new ROT.Map.IceyMaze(this._width,this._height);
+      var generator = new ROT.Map.Cellular(30,this._height);
+      generator.randomize(0.5);
+      var totalIterations = 3;
+      for (var i = 0; i < totalIterations - 1; i++) {
+        generator.create();
+      }
 
-      generator.create(
-        function(x,y,v) {
-          if (v === 1) { mapTiles[x][y] = Game.Tile.pinTile;}
-          else{ mapTiles[x][y] = Game.Tile.floorTile;}
-        });
+      // run again then update map
+      generator.create(function(x,y,v) {
+        if (v === 1) {
+          mapTiles[x][y] = Game.Tile.floorTile;
+        } else {
+          mapTiles[x][y] = Game.Tile.pinTile;
+        }
+      });
+      for (var a = 30; a < this._width; a++){
+        for (var b = 0; b < this._height; b++){
+          mapTiles[a][b] = Game.Tile.pinTile;
+        }
+      }
+      mapTiles[70][10] = Game.Tile.timeTile;
       return mapTiles;
     }
   }

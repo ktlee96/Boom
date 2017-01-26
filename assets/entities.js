@@ -17,8 +17,30 @@ Game.EntityGenerator.learn({
 });
 
 Game.EntityGenerator.learn({
-  name: 'moss',
+  name: 'box',
   chr:'📦',
+  fg:'#6b6',
+  maxHp: 1,
+  mixins: ["HitPoints"]
+});
+
+Game.EntityGenerator.learn({
+  name: 'rock',
+  chr:'💎',
+  fg:'#6b6',
+  maxHp: 1,
+  mixins: ["HitPoints"]
+});
+Game.EntityGenerator.learn({
+  name: 'mushroom',
+  chr:'🍄',
+  fg:'#6b6',
+  maxHp: 1,
+  mixins: ["HitPoints"]
+});
+Game.EntityGenerator.learn({
+  name: 'present',
+  chr:'🎁',
   fg:'#6b6',
   maxHp: 1,
   mixins: ["HitPoints"]
